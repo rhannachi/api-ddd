@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "git@github.com:ramzi-hannachi-1991/api-ddd.git",
   "author": "Ramzi <ramzi.hannachi1991@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "git-commit-msg-linter": "^4.1.2"
+  }
 }
