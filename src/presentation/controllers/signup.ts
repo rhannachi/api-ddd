@@ -4,6 +4,7 @@ import { badRequest } from "../helpers/httpHelper";
 import { Controller } from "../protocols/controller";
 import { EmailValidator } from "../protocols/emailValidator";
 import { InvalidParamsError } from "../errors/invalidParamsError";
+import { ServerError } from "../errors/ServerError";
 
 export class SignUpController implements Controller {
   private readonly emailValidator: EmailValidator;
@@ -13,22 +14,30 @@ export class SignUpController implements Controller {
   }
 
   handle(httprequest: HttpRequest): HttpResponse {
-    const requiredFields = [
-      "name",
-      "email",
-      "password",
-      "passwordConfirmation",
-    ];
+    try {
+      const requiredFields = [
+        "name",
+        "email",
+        "password",
+        "passwordConfirmation",
+      ];
 
-    for (const field of requiredFields) {
-      if (!httprequest.body[field]) {
-        return badRequest(new MissingParamsError(field));
+      for (const field of requiredFields) {
+        if (!httprequest.body[field]) {
+          return badRequest(new MissingParamsError(field));
+        }
       }
-    }
 
-    const isValidEmail = this.emailValidator.isValid(httprequest.body.email);
-    if (!isValidEmail) {
-      return badRequest(new InvalidParamsError("email"));
+      const isValidEmail = this.emailValidator.isValid(httprequest.body.email);
+
+      if (!isValidEmail) {
+        return badRequest(new InvalidParamsError("email"));
+      }
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: new ServerError(),
+      };
     }
 
     // TODO remove in future devs
