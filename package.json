@@ -6,7 +6,8 @@
   "author": "Ramzi <ramzi.hannachi1991@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {},
   "devDependencies": {
