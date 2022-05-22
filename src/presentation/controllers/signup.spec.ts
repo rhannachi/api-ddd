@@ -1,6 +1,5 @@
-import { InvalidParamsError } from "../errors/invalidParamsError";
-import { MissingParamsError } from "../errors/missingParamsError";
-import { EmailValidator } from "../protocols/emailValidator";
+import { InvalidParamsError, MissingParamsError, ServerError } from "../errors";
+import { EmailValidator } from "../protocols";
 import { SignUpController } from "./signup";
 
 interface MakeSutTypes {
@@ -8,13 +7,26 @@ interface MakeSutTypes {
   sut: SignUpController;
 }
 
-const makeSut = (): MakeSutTypes => {
+const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorMock implements EmailValidator {
     isValid(email: string): boolean {
       return true;
     }
   }
-  const emailValidatorMock = new EmailValidatorMock();
+  return new EmailValidatorMock();
+};
+
+const makeEmailValidatorWithError = (): EmailValidator => {
+  class EmailValidatorMock implements EmailValidator {
+    isValid(email: string) {
+      throw new Error();
+    }
+  }
+  return new EmailValidatorMock();
+};
+
+const makeSut = (): MakeSutTypes => {
+  const emailValidatorMock = makeEmailValidator();
   const sut = new SignUpController(emailValidatorMock);
 
   return {
@@ -98,5 +110,39 @@ describe("SignUp Controller", () => {
     const httpresponse = sut.handle(httprequest);
     expect(httpresponse?.statusCode).toBe(400);
     expect(httpresponse?.body).toEqual(new InvalidParamsError("email"));
+  });
+
+  test("should call EmailValidator with correct email", () => {
+    const { sut, emailValidatorMock } = makeSut();
+
+    const isValidSpy = jest.spyOn(emailValidatorMock, "isValid");
+
+    const httprequest = {
+      body: {
+        email: "my_email@gmail.com",
+        name: "my_name",
+        password: "my_password",
+        passwordConfirmation: "my_password",
+      },
+    };
+    sut.handle(httprequest);
+    expect(isValidSpy).toHaveBeenCalledWith("my_email@gmail.com");
+  });
+
+  test("should return 500 if EmailValidator throws", () => {
+    const emailValidatorMock = makeEmailValidatorWithError();
+    const sut = new SignUpController(emailValidatorMock);
+
+    const httprequest = {
+      body: {
+        email: "my_email@gmail.com",
+        name: "my_name",
+        password: "my_password",
+        passwordConfirmation: "my_password",
+      },
+    };
+    const httpresponse = sut.handle(httprequest);
+    expect(httpresponse?.statusCode).toBe(500);
+    expect(httpresponse?.body).toEqual(new ServerError());
   });
 });
