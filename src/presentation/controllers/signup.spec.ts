@@ -7,13 +7,26 @@ interface MakeSutTypes {
   sut: SignUpController;
 }
 
-const makeSut = (): MakeSutTypes => {
+const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorMock implements EmailValidator {
     isValid(email: string): boolean {
       return true;
     }
   }
-  const emailValidatorMock = new EmailValidatorMock();
+  return new EmailValidatorMock();
+};
+
+const makeEmailValidatorWithError = (): EmailValidator => {
+  class EmailValidatorMock implements EmailValidator {
+    isValid(email: string) {
+      throw new Error();
+    }
+  }
+  return new EmailValidatorMock();
+};
+
+const makeSut = (): MakeSutTypes => {
+  const emailValidatorMock = makeEmailValidator();
   const sut = new SignUpController(emailValidatorMock);
 
   return {
@@ -117,12 +130,7 @@ describe("SignUp Controller", () => {
   });
 
   test("should return 500 if EmailValidator throws", () => {
-    class EmailValidatorMock implements EmailValidator {
-      isValid(email: string) {
-        throw new Error();
-      }
-    }
-    const emailValidatorMock = new EmailValidatorMock();
+    const emailValidatorMock = makeEmailValidatorWithError();
     const sut = new SignUpController(emailValidatorMock);
 
     const httprequest = {
