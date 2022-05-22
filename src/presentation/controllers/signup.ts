@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse } from "../protocols/http";
-import { badRequest } from "../helpers/httpHelper";
+import { badRequest, serverError } from "../helpers/httpHelper";
 import { Controller } from "../protocols/controller";
 import { EmailValidator } from "../protocols/emailValidator";
 import { InvalidParamsError, MissingParamsError, ServerError } from "../errors";
@@ -32,10 +32,7 @@ export class SignUpController implements Controller {
         return badRequest(new InvalidParamsError("email"));
       }
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: new ServerError(),
-      };
+      return serverError();
     }
 
     // TODO remove in future devs
