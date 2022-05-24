@@ -1,5 +1,5 @@
 import { InvalidParamsError, MissingParamsError } from "../../errors";
-import { badRequest, serverError } from "../../helpers/httpHelper";
+import { badRequest, serverError, ok } from "../../helpers/httpHelper";
 import {
   AddAccount,
   Controller,
@@ -49,18 +49,9 @@ export class SignUpController implements Controller {
         password,
       });
 
-      return {
-        statusCode: 200,
-        body: account,
-      };
+      return ok(account);
     } catch (error) {
       return serverError();
     }
-
-    // TODO remove in future devs
-    return {
-      statusCode: 500,
-      body: "TODO",
-    };
   }
 }
