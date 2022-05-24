@@ -6,8 +6,12 @@
   "author": "Ramzi <ramzi.hannachi1991@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --silent --noStackTrace --runInBand",
+    "test:unit": "yarn test -c jest-unit.config.ts",
+    "test:integration": "yarn test -c jest-integration.config.ts",
+    "test:verbose": "jest --runInBand",
+    "test:watch": "yarn test --watch",
+    "test:ci": "yarn test --coverage"
   },
   "dependencies": {},
   "devDependencies": {
