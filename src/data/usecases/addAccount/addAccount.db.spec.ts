@@ -1,5 +1,5 @@
-import { Encrypter } from "../../protocols/encrypter";
 import { AddAccountDb } from "./addAccount.db";
+import { Encrypter } from "./addAccount.db.protocols";
 
 interface MakeAddAccountDbTypes {
   addAccountDb: AddAccountDb;
