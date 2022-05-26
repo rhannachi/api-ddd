@@ -8,7 +8,7 @@ import {
   AddAccount,
   AddAccountModel,
   EmailValidator,
-} from "./signup.protocols";
+} from "./protocols";
 import { SignUpController } from "./signup";
 
 interface MakeSignupTypes {

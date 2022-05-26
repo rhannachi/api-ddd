@@ -6,7 +6,7 @@ import {
   EmailValidator,
   HttpRequest,
   HttpResponse,
-} from "./signup.protocols";
+} from "./protocols";
 
 export class SignUpController implements Controller {
   private readonly emailValidator: EmailValidator;
