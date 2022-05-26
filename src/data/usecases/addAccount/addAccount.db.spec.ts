@@ -4,7 +4,7 @@ import {
   AddAccountModel,
   AddAccountRepository,
   Encrypter,
-} from "./addAccount.db.protocols";
+} from "./protocols";
 
 interface MakeAddAccountDbTypes {
   addAccountDb: AddAccountDb;
