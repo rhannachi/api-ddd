@@ -17,4 +17,6 @@ export default {
   transform: {
     ".+\\.ts$": "ts-jest",
   },
+  // MongoDB dependency
+  preset: "@shelf/jest-mongodb",
 };
