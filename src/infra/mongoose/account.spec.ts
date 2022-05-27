@@ -1,4 +1,4 @@
-import MongoHelper from "../helpers/mongo";
+import MongoHelper from "./helpers";
 import { AccountMongooseRepository } from "./account";
 import AccountModelM from "./account.model";
 

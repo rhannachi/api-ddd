@@ -1,6 +1,6 @@
-import { AddAccountRepository } from "../../../data/protocols/addAccountRepository";
-import { AccountModel } from "../../../domain/models/account";
-import { AddAccountModel } from "../../../domain/usecases/addAccount";
+import { AddAccountRepository } from "../../data/protocols/addAccountRepository";
+import { AccountModel } from "../../domain/models/account";
+import { AddAccountModel } from "../../domain/usecases/addAccount";
 import AccountModelM from "./account.model";
 
 export class AccountMongooseRepository implements AddAccountRepository {

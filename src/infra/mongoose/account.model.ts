@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { AccountModel } from "../../../domain/models/account";
+import { AccountModel } from "../../domain/models/account";
 
 interface AccountModelDoc extends AccountModel, Document {}
 
