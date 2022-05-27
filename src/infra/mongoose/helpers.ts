@@ -1,30 +1,38 @@
-import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose from "mongoose";
+import { MongoMemoryServer } from 'mongodb-memory-server'
+import mongoose from 'mongoose'
 
 const config = {
   instance: {
-    dbName: process.env.DB_NAME,
-  },
-};
+    dbName: process.env.DB_NAME
+  }
+}
 
-export default abstract class MongoHelper {
-  private static mongoServer: MongoMemoryServer;
+interface IMongoHelper {
+  mongoServer?: MongoMemoryServer
+  connect: () => Promise<void>
+  disconnect: () => Promise<void>
+}
 
-  static async connect(): Promise<void> {
-    this.mongoServer = await MongoMemoryServer.create(config);
+const MongoHelper: IMongoHelper = {
+  mongoServer: undefined,
+
+  async connect (): Promise<void> {
+    this.mongoServer = await MongoMemoryServer.create(config)
 
     // TODO custom error
-    if (!this.mongoServer) {
-      throw new Error("connect: DB connection failed");
+    if (this.mongoServer === undefined) {
+      throw new Error('connect: DB connection failed')
     }
 
-    await mongoose.connect(this.mongoServer.getUri());
-  }
+    await mongoose.connect(this.mongoServer.getUri())
+  },
 
-  static async disconnect(): Promise<void> {
-    await mongoose.disconnect();
-    if (this.mongoServer) {
-      await this.mongoServer.stop();
+  async disconnect (): Promise<void> {
+    await mongoose.disconnect()
+    if (this.mongoServer !== undefined) {
+      await this.mongoServer.stop()
     }
   }
 }
+
+export default MongoHelper

@@ -1,8 +1,8 @@
 export interface HttpResponse {
-  statusCode: number;
-  body: any; // TODO
+  statusCode: number
+  body: any // TODO
 }
 
 export interface HttpRequest {
-  body?: any; // TODO
+  body?: any // TODO
 }
