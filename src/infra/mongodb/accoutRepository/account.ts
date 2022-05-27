@@ -16,12 +16,10 @@ export class AccountMongoRepository implements AddAccountRepository {
       // TODO move to handler error
       if (!insertedAccount?._id) throw new Error("Error inserting contact");
 
-      return {
-        id: insertedAccount._id.toString(),
-        name: insertedAccount.name,
-        email: insertedAccount.email,
-        password: insertedAccount.password,
-      };
+      // TODO refacto, use mongoose.model
+      const account = MongoHelper.mapDocument<AccountModel>(insertedAccount);
+
+      return account;
     } catch (error) {
       // TODO handler error
       throw Error();

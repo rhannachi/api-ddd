@@ -1,27 +1,6 @@
 import MongoHelper from "../helpers/mongo";
 import { AccountMongoRepository } from "./account";
 
-/* const makeAccountMongoRepository = () => {
-  class AccountMongoRepository implements AddAccountRepository {
-    add(accountData: AddAccountModel): Promise<AccountModel> {
-      return new Promise((resolve, reject) =>
-        resolve({
-          id: "any_id",
-          name: "any_name",
-          email: "any_email@gmail.com",
-          password: "any_password",
-        })
-      );
-    }
-  }
-
-  const accountMongoRepository = new AccountMongoRepository();
-
-  return {
-    accountMongoRepository,
-  };
-}; */
-
 describe("Account Mongo Repository", () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL);
