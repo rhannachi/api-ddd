@@ -4,7 +4,7 @@ import AccountModelM from "./account.repository.model";
 
 describe("Account Mongoose Repository", () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL);
+    await MongoHelper.connect();
   });
 
   afterAll(async () => {

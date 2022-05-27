@@ -3,7 +3,6 @@ import { AccountModel } from "../../domain/models/account";
 
 interface AccountModelDoc extends AccountModel, Document {}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AccountSchemaFields: Record<keyof Omit<AccountModel, "id">, any> = {
   name: String,
   email: String,

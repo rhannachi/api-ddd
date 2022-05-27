@@ -13,10 +13,10 @@ export default {
   coverageProvider: "v8",
   // The test environment that will be used for testing
   testEnvironment: "jest-environment-node",
-  // MongoDB dependency
-  preset: "@shelf/jest-mongodb",
   // A map from regular expressions to paths to transformers
   transform: {
     ".+\\.ts$": "ts-jest",
   },
+  // stupFiles
+  setupFiles: ["<rootDir>/jest.stup.ts"],
 };
