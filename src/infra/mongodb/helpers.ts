@@ -11,12 +11,10 @@ export default abstract class MongoHelper {
     await this.client.close();
   }
 
-  // TODO refacto, use mongoose.model
   static getCollection(name: string): Collection {
     return this.client.db().collection(name);
   }
 
-  // TODO refacto, use mongoose.model
   static mapDocument<T>(document: any): T {
     const { _id, ...documentWithoutId } = document;
     return Object.assign({}, documentWithoutId, { id: _id });

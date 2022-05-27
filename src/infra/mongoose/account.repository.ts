@@ -1,7 +1,7 @@
-import { AddAccountRepository } from "../../data/protocols/addAccountRepository";
+import { AddAccountRepository } from "../../data/protocols/addAccount.repository";
 import { AccountModel } from "../../domain/models/account";
 import { AddAccountModel } from "../../domain/usecases/addAccount";
-import AccountModelM from "./account.model";
+import AccountModelM from "./account.repository.model";
 
 export class AccountMongooseRepository implements AddAccountRepository {
   async add(accountData: AddAccountModel): Promise<AccountModel> {
