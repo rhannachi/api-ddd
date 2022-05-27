@@ -1,6 +1,6 @@
-import config from "./jest.config";
+import config from './jest.config'
 
 module.exports = {
   ...config,
-  testMatch: ["**/*.spec.ts"],
-};
+  testMatch: ['**/*.spec.ts']
+}
