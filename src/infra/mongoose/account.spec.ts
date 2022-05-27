@@ -1,7 +1,8 @@
-import MongoHelper from "../helpers/mongo";
-import { AccountMongoRepository } from "./account";
+import MongoHelper from "./helpers";
+import { AccountMongooseRepository } from "./account";
+import AccountModelM from "./account.model";
 
-describe("Account Mongo Repository", () => {
+describe("Account Mongoose Repository", () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL);
   });
@@ -11,14 +12,13 @@ describe("Account Mongo Repository", () => {
   });
 
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection("accounts");
-    await accountCollection.deleteMany({});
+    await AccountModelM.deleteMany({});
   });
 
   test("Sould return an account on success", async () => {
-    const accountMongoRepository = new AccountMongoRepository();
+    const accountMongooseRepository = new AccountMongooseRepository();
 
-    const account = await accountMongoRepository.add({
+    const account = await accountMongooseRepository.add({
       name: "any_name",
       email: "any_email@gmail.com",
       password: "any_password",
