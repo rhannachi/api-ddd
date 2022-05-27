@@ -1,10 +1,10 @@
 import MongoHelper from "./helpers";
-import { AccountMongooseRepository } from "./account";
-import AccountModelM from "./account.model";
+import { AccountMongooseRepository } from "./account.repository";
+import AccountModelM from "./account.repository.model";
 
 describe("Account Mongoose Repository", () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL);
+    await MongoHelper.connect();
   });
 
   afterAll(async () => {

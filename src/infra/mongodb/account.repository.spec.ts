@@ -1,9 +1,9 @@
 import MongoHelper from "./helpers";
-import { AccountMongoRepository } from "./account";
+import { AccountMongoRepository } from "./account.repository";
 
 describe("Account Mongo Repository", () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL);
+    await MongoHelper.connect();
   });
 
   afterAll(async () => {

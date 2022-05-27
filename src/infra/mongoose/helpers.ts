@@ -1,13 +1,30 @@
-import mongoose, { Connection } from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
+import mongoose from "mongoose";
+
+const config = {
+  instance: {
+    dbName: process.env.DB_NAME,
+  },
+};
 
 export default abstract class MongoHelper {
-  static client: Connection;
+  private static mongoServer: MongoMemoryServer;
 
-  static async connect(uri: string): Promise<void> {
-    this.client = (await mongoose.connect(uri)).connection;
+  static async connect(): Promise<void> {
+    this.mongoServer = await MongoMemoryServer.create(config);
+
+    // TODO custom error
+    if (!this.mongoServer) {
+      throw new Error("connect: DB connection failed");
+    }
+
+    await mongoose.connect(this.mongoServer.getUri());
   }
 
   static async disconnect(): Promise<void> {
-    await this.client.close();
+    await mongoose.disconnect();
+    if (this.mongoServer) {
+      await this.mongoServer.stop();
+    }
   }
 }
