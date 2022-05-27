@@ -1,8 +1,10 @@
 import express from 'express'
-import setupMiddlewares from './middleware'
+import { bodyParser } from '../middleware/bodyParser'
+import { cors } from '../middleware/cors'
 
 const app = express()
-setupMiddlewares(app)
+app.use(bodyParser)
+app.use(cors)
 
 const port = process.env.PORT ?? 5050
 
