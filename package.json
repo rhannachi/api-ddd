@@ -9,7 +9,7 @@
     "test": "jest --silent --noStackTrace --runInBand",
     "test:unit": "yarn test -c jest-unit.config.ts",
     "test:integration": "yarn test -c jest-integration.config.ts",
-    "test:verbose": "jest --runInBand",
+    "test:verbose": "jest --runInBand --verbose",
     "test:watch": "yarn test --watch",
     "test:ci": "yarn test --coverage"
   },
