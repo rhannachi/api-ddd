@@ -1,15 +1,14 @@
-import express from 'express'
-import { bodyParser } from '../middleware/bodyParser'
-import { contentType } from '../middleware/contentType'
-import { cors } from '../middleware/cors'
+import express, { Router } from 'express'
+import middlewares from '../middlewares'
+import routes from '../routes'
 
 const app = express()
-app.use(bodyParser)
-app.use(cors)
-app.use(contentType)
+const router = Router()
+app.use('/api', router)
 
-const port = process.env.PORT ?? 5050
+// middleware
+app.use(middlewares)
+// router
+routes.forEach((route) => route(router))
 
-export {
-  app, port
-}
+export default app
