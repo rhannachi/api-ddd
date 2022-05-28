@@ -1,17 +1,17 @@
-import MongoHelper from './helpers'
+import MongoDbHelper from './config'
 import { AccountMongoRepository } from './account.repository'
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
-    await MongoHelper.connect()
+    await MongoDbHelper.connect({})
   })
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongoDbHelper.disconnect()
   })
 
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection('accounts')
+    const accountCollection = MongoDbHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
   })
 

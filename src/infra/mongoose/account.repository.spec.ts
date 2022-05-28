@@ -1,14 +1,14 @@
-import MongoHelper from './helpers'
+import MongooseHelper from './config'
 import { AccountMongooseRepository } from './account.repository'
 import AccountModelM from './account.repository.model'
 
 describe('Account Mongoose Repository', () => {
   beforeAll(async () => {
-    await MongoHelper.connect()
+    await MongooseHelper.connect({})
   })
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongooseHelper.disconnect()
   })
 
   beforeEach(async () => {

@@ -1,29 +1,20 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import { Collection, MongoClient } from 'mongodb'
+import { IMongoDbHelper } from '../helpers'
 
-const config = {
-  instance: {
-    dbName: process.env.DB_NAME
-  }
-}
-
-interface IMongoHelper {
-  client?: MongoClient
-  mongoServer?: MongoMemoryServer
-  dbName?: string
-  connect: () => Promise<void>
-  disconnect: () => Promise<void>
-  getCollection: (name: string) => Collection
-  mapDocument: <T>(document: any) => T
-}
-
-const MongoHelper: IMongoHelper = {
+const MongoDbHelper: IMongoDbHelper = {
   client: undefined,
   mongoServer: undefined,
   dbName: undefined,
 
-  async connect (): Promise<void> {
-    this.mongoServer = await MongoMemoryServer.create(config)
+  async connect ({ name = '', ip = '127.0.0.1', port = 27017 }): Promise<void> {
+    this.mongoServer = await MongoMemoryServer.create({
+      instance: {
+        dbName: name,
+        ip,
+        port
+      }
+    })
 
     // TODO custom error
     if (this.mongoServer === undefined) {
@@ -62,4 +53,4 @@ const MongoHelper: IMongoHelper = {
   }
 }
 
-export default MongoHelper
+export default MongoDbHelper

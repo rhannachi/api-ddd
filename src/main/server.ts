@@ -1,5 +1,11 @@
-import app from './config/app'
+import MongoDbHelper from '../infra/mongodb/config'
 
 const port = process.env.PORT ?? 5050
 
-app.listen(port, () => console.info(`Server at runnint http://localhost:${port}`))
+MongoDbHelper.connect({})
+  .then(async () => {
+    const app = (await import('./config/app')).default
+    app.listen(port, () => console.info(`Server at runnint http://localhost:${port}`))
+  }).catch((e: Error) => {
+    throw Error(e?.message)
+  })
