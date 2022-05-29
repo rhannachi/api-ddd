@@ -17,6 +17,7 @@
     "test:ci": "yarn test --coverage"
   },
   "ts-standard": {
+    "project": "./tsconfig.json",
     "ignore": [
       "dist",
       "src/**/*.js"
@@ -52,7 +53,7 @@
     "supertest": "^6.2.3",
     "ts-jest": "^28.0.2",
     "ts-node": "^10.7.0",
-    "ts-standard": "^11.0.0",
+    "ts-standard": "*",
     "typescript": "^4.6.4"
   }
 }
