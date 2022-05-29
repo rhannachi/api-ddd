@@ -1,8 +1,8 @@
+import { MongoClient, Collection } from 'mongodb'
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import { Collection, MongoClient } from 'mongodb'
-import { IMongoDbHelper } from '../helpers'
+import { IMongoHelper } from '../helper'
 
-const MongoDbHelper: IMongoDbHelper = {
+export const MongoDbHelper: IMongoHelper = {
   client: undefined,
   mongoServer: undefined,
   dbName: undefined,
@@ -52,5 +52,3 @@ const MongoDbHelper: IMongoDbHelper = {
     return Object.assign({}, documentWithoutId, { id: _id })
   }
 }
-
-export default MongoDbHelper

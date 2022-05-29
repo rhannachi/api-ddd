@@ -1,6 +1,6 @@
-import MongooseHelper from './config'
 import { AccountMongooseRepository } from './account.repository'
-import AccountModelM from './account.repository.model'
+import { AccountModelMongoose } from './account.repository.model'
+import { MongooseHelper } from './helper'
 
 describe('Account Mongoose Repository', () => {
   beforeAll(async () => {
@@ -12,7 +12,7 @@ describe('Account Mongoose Repository', () => {
   })
 
   beforeEach(async () => {
-    await AccountModelM.deleteMany({})
+    await AccountModelMongoose.deleteMany({})
   })
 
   test('Sould return an account on success', async () => {

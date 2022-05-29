@@ -1,10 +1,7 @@
+import { AccountModel } from '../../domain/models'
+import { AddAccountModel } from '../../domain/usecases'
+import { AddAccountRepository, Encrypter } from '../protocols'
 import { AddAccountDb } from './addAccount.db'
-import {
-  AccountModel,
-  AddAccountModel,
-  AddAccountRepository,
-  Encrypter
-} from './protocols'
 
 interface MakeAddAccountDbType {
   addAccountDb: AddAccountDb

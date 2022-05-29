@@ -1,4 +1,4 @@
-import MongoDbHelper from '../infra/mongodb/config'
+import { MongoDbHelper } from '../infra/database'
 
 const port = process.env.PORT ?? 5050
 

@@ -1,5 +1,5 @@
-import MongoDbHelper from './config'
 import { AccountMongoRepository } from './account.repository'
+import { MongoDbHelper } from './helper'
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {

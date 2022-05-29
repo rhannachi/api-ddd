@@ -1,8 +1,8 @@
-import { AddAccountDb } from '../../data/usecases/addAccount/addAccount.db'
-import { BcryptAdapter } from '../../infra/bcrypt/bcrypt.adapter'
-import { AccountMongoRepository } from '../../infra/mongodb/account.repository'
-import { SignUpController } from '../../presentation/controllers/signup/signup'
-import { EmailValidatorAdapter } from '../../utilis/emailValidator.adapter'
+import { AddAccountDb } from '../../data/usecases'
+import { BcryptAdapter } from '../../infra/bcrypt'
+import { AccountMongoRepository } from '../../infra/database'
+import { SignUpController } from '../../presentation/controllers'
+import { EmailValidatorAdapter } from '../../utilis'
 
 export const makeSignupController = (): SignUpController => {
   const salt = 12

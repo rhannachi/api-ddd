@@ -1,9 +1,9 @@
 import { Controller, HttpRequest } from '../../presentation/protocols'
 import { Request, Response } from 'express'
 
-type AdapterRouteType = (req: Request, res: Response) => Promise<void>
+type ExpressAdapterType = (req: Request, res: Response) => Promise<void>
 
-export const adapterRoute = (controller: Controller): AdapterRouteType => {
+export const expressAdapter = (controller: Controller): ExpressAdapterType => {
   return async (req: Request, res: Response): Promise<void> => {
     const httpRequest: HttpRequest = {
       body: req.body

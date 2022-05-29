@@ -1,17 +1,17 @@
 import { Collection, MongoClient } from 'mongodb'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 
-interface ConnectType {
+interface IConnect {
   name: string
   ip: string
   port: number
 }
 
-export interface IMongoDbHelper {
+export interface IMongoHelper {
   client?: MongoClient
   mongoServer?: MongoMemoryServer
   dbName?: string
-  connect: (config: Partial<ConnectType>) => Promise<void>
+  connect: (config: Partial<IConnect>) => Promise<void>
   disconnect: () => Promise<void>
   getCollection: (name: string) => Collection
   mapDocument: <T>(document: any) => T

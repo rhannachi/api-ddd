@@ -1,10 +1,10 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
-import { IMongoDbHelper } from '../helpers'
+import { IMongoHelper } from '../helper'
 
-type IMongooseHelper = Pick<IMongoDbHelper, 'mongoServer' | 'connect' | 'disconnect' >
+type IMongooseHelper = Pick<IMongoHelper, 'mongoServer' | 'connect' | 'disconnect' >
 
-const MongooseHelper: IMongooseHelper = {
+export const MongooseHelper: IMongooseHelper = {
   mongoServer: undefined,
 
   async connect ({ name = '', ip = '127.0.0.1', port = 27017 }): Promise<void> {
@@ -30,5 +30,3 @@ const MongooseHelper: IMongooseHelper = {
     }
   }
 }
-
-export default MongooseHelper

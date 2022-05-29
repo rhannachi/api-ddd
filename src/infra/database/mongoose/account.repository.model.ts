@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { AccountModel } from '../../domain/models/account'
+import { AccountModel } from '../../../domain/models'
 
 interface AccountModelDoc extends AccountModel, Document {}
 
@@ -11,4 +11,5 @@ const AccountSchemaFields: Record<keyof Omit<AccountModel, 'id'>, any> = {
 
 const AccountSchema: Schema = new Schema(AccountSchemaFields)
 
-export default model<AccountModelDoc>('Account', AccountSchema)
+// TODO rename this
+export const AccountModelMongoose = model<AccountModelDoc>('Account', AccountSchema)
