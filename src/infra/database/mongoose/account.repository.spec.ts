@@ -1,18 +1,18 @@
-import MongoHelper from './helpers'
 import { AccountMongooseRepository } from './account.repository'
-import AccountModelM from './account.repository.model'
+import { AccountModelMongoose } from './account.repository.model'
+import { MongooseHelper } from './helper'
 
 describe('Account Mongoose Repository', () => {
   beforeAll(async () => {
-    await MongoHelper.connect()
+    await MongooseHelper.connect({})
   })
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongooseHelper.disconnect()
   })
 
   beforeEach(async () => {
-    await AccountModelM.deleteMany({})
+    await AccountModelMongoose.deleteMany({})
   })
 
   test('Sould return an account on success', async () => {
