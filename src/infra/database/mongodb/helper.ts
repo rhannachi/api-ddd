@@ -1,6 +1,6 @@
 import { MongoClient, Collection } from 'mongodb'
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import { IMongoHelper } from '../helper'
+import { IMongoHelper } from '../mongo'
 
 export const MongoDbHelper: IMongoHelper = {
   client: undefined,
