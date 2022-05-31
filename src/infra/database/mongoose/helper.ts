@@ -2,7 +2,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 import { IMongoHelper } from '../helper'
 
-type IMongooseHelper = Pick<IMongoHelper, 'mongoServer' | 'connect' | 'disconnect' >
+interface IMongooseHelper extends Pick<IMongoHelper, 'mongoServer' | 'connect' | 'disconnect' > { }
 
 export const MongooseHelper: IMongooseHelper = {
   mongoServer: undefined,
@@ -27,6 +27,7 @@ export const MongooseHelper: IMongooseHelper = {
     await mongoose.disconnect()
     if (this.mongoServer !== undefined) {
       await this.mongoServer.stop()
+      this.mongoServer = undefined
     }
   }
 }
