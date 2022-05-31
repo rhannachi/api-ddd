@@ -6,16 +6,18 @@
   "author": "Ramzi <ramzi.hannachi1991@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "sucrase-node ./src/main/server.ts",
-    "lint": "ts-standard",
-    "lint:fix": "ts-standard --fix",
+    "dev": "sucrase-node ./src/main/server.ts",
+    "ts:check": "tsc --noemit",
+    "lint": "yarn ts:check && yarn dep:validation && ts-standard",
+    "lint:fix": "yarn lint --fix",
     "test": "jest --silent --noStackTrace --runInBand",
     "test:unit": "yarn test -c jest-unit.config.ts",
-    "test:integration": "yarn test -c jest-integration.config.ts",
+    "test:int": "yarn test -c jest-int.config.ts",
     "test:verbose": "jest --runInBand --verbose",
     "test:watch": "yarn test --watch",
     "test:ci": "yarn test --coverage",
-    "dependencies:build": "depcruise --config .dependency-cruiser.js --output-type dot src | dot -T png > assets/dependencies.png"
+    "dep:build": "depcruise --config .dependency-cruiser.js --output-type dot src | dot -T png > assets/dependencies.png",
+    "dep:validation": "depcruise --config .dependency-cruiser.js src"
   },
   "ts-standard": {
     "project": "./tsconfig.json",
@@ -56,6 +58,6 @@
     "ts-jest": "^28.0.2",
     "ts-node": "^10.7.0",
     "ts-standard": "*",
-    "typescript": "^4.6.4"
+    "typescript": "^4.7.2"
   }
 }
