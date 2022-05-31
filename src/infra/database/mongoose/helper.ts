@@ -27,6 +27,7 @@ export const MongooseHelper: IMongooseHelper = {
     await mongoose.disconnect()
     if (this.mongoServer !== undefined) {
       await this.mongoServer.stop()
+      this.mongoServer = undefined
     }
   }
 }

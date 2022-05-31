@@ -34,9 +34,11 @@ export const MongoDbHelper: IMongoHelper = {
   async disconnect (): Promise<void> {
     if (this.client !== undefined) {
       await this.client.close()
+      this.client = undefined
     }
     if (this.mongoServer !== undefined) {
       await this.mongoServer.stop()
+      this.mongoServer = undefined
     }
   },
 
