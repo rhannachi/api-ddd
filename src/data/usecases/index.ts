@@ -1,1 +1,1 @@
-export * from './addAccount.db'
+export * from './addAccount'

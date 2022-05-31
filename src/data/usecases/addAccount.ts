@@ -2,7 +2,7 @@ import { IAccountModel } from '../../domain/models'
 import { IAddAccount, IAddAccountModel } from '../../domain/usecases'
 import { IAddAccountRepository, IEncrypter } from '../protocols'
 
-export class AddAccountDb implements IAddAccount {
+export class AddAccount implements IAddAccount {
   private readonly encrypter
   private readonly addAccountRepository
 
