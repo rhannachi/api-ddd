@@ -9,14 +9,14 @@ describe('Mongo Helper', () => {
     await MongoDbHelper.disconnect()
   })
 
-  test('Should reconnect if mongodb is down', async () => {
-    let accountCollection = MongoDbHelper.getCollection('accounts')
-    expect(accountCollection).toBeTruthy()
+  test('Should reconnect if mongoose deconnect', async () => {
+    expect(MongoDbHelper.mongoServer).toBeTruthy()
+    expect(MongoDbHelper.client).toBeTruthy()
     await MongoDbHelper.disconnect()
-    expect(MongoDbHelper?.client).toBeUndefined()
     expect(MongoDbHelper?.mongoServer).toBeUndefined()
+    expect(MongoDbHelper?.client).toBeUndefined()
     await MongoDbHelper.connect({})
-    accountCollection = MongoDbHelper.getCollection('accounts')
-    expect(accountCollection).toBeTruthy()
+    expect(MongoDbHelper.mongoServer).toBeTruthy()
+    expect(MongoDbHelper.client).toBeTruthy()
   })
 })
