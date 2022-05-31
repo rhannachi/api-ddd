@@ -1,9 +1,9 @@
 import { model, Schema } from 'mongoose'
-import { AccountModel } from '../../../domain/models'
+import { IAccountModel } from '../../../domain/models'
 
-interface AccountModelDoc extends AccountModel, Document {}
+interface AccountModelDoc extends IAccountModel, Document {}
 
-const AccountSchemaFields: Record<keyof Omit<AccountModel, 'id'>, any> = {
+const AccountSchemaFields: Record<keyof Omit<IAccountModel, 'id'>, any> = {
   name: String,
   email: String,
   password: String

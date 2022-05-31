@@ -1,18 +1,18 @@
-import { AddAccount } from '../../domain/usecases'
+import { IAddAccount } from '../../domain/usecases'
 import { InvalidParamsError, MissingParamsError } from '../errors'
 import { badRequest, ok, serverError } from '../helper'
-import { Controller, HttpRequest, HttpResponse, EmailValidator } from '../protocols'
+import { IController, IHttpRequest, IHttpResponse, IEmailValidator } from '../protocols'
 
-export class SignUpController implements Controller {
-  private readonly emailValidator: EmailValidator
-  private readonly addAccount: AddAccount
+export class SignUpController implements IController {
+  private readonly emailValidator: IEmailValidator
+  private readonly addAccount: IAddAccount
 
-  constructor (emailValidator: EmailValidator, addAccount: AddAccount) {
+  constructor (emailValidator: IEmailValidator, addAccount: IAddAccount) {
     this.emailValidator = emailValidator
     this.addAccount = addAccount
   }
 
-  async handle (httprequest: HttpRequest): Promise<HttpResponse> {
+  async handle (httprequest: IHttpRequest): Promise<IHttpResponse> {
     try {
       const requiredFields = [
         'name',

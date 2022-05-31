@@ -1,16 +1,16 @@
-import { AccountModel } from '../../domain/models'
-import { AddAccountModel } from '../../domain/usecases'
-import { AddAccountRepository, Encrypter } from '../protocols'
+import { IAccountModel } from '../../domain/models'
+import { IAddAccountModel } from '../../domain/usecases'
+import { IAddAccountRepository, IEncrypter } from '../protocols'
 import { AddAccountDb } from './addAccount.db'
 
 interface MakeAddAccountDbType {
   addAccountDb: AddAccountDb
-  encrypterMock: Encrypter
-  addAccountRepositoryMock: AddAccountRepository
+  encrypterMock: IEncrypter
+  addAccountRepositoryMock: IAddAccountRepository
 }
 
-const makeEncrypter = (): Encrypter => {
-  class EncrypterMock implements Encrypter {
+const makeEncrypter = (): IEncrypter => {
+  class EncrypterMock implements IEncrypter {
     async encrypt (value: string): Promise<string> {
       return await Promise.resolve('hashed_password')
     }
@@ -19,9 +19,9 @@ const makeEncrypter = (): Encrypter => {
   return new EncrypterMock()
 }
 
-const makeAddAccountRepository = (): AddAccountRepository => {
-  class AddAccountRepositoryMock implements AddAccountRepository {
-    async add (accountData: AddAccountModel): Promise<AccountModel> {
+const makeAddAccountRepository = (): IAddAccountRepository => {
+  class AddAccountRepositoryMock implements IAddAccountRepository {
+    async add (accountData: IAddAccountModel): Promise<IAccountModel> {
       const fakeAccount = {
         id: 'valid_id',
         name: 'valid_name',
@@ -51,7 +51,7 @@ const makeAddAccountDb = (): MakeAddAccountDbType => {
 }
 
 describe('DbAddAccount Usecase', () => {
-  test('Sould call Encrypter with correct password', async () => {
+  test('Sould call IEncrypter with correct password', async () => {
     const { addAccountDb, encrypterMock } = makeAddAccountDb()
     const encryptSpy = jest.spyOn(encrypterMock, 'encrypt')
     const accountData = {
@@ -64,7 +64,7 @@ describe('DbAddAccount Usecase', () => {
     expect(encryptSpy).toHaveBeenCalledWith('valid_password')
   })
 
-  test('Sould throw if Encrypter throws', async () => {
+  test('Sould throw if IEncrypter throws', async () => {
     const { addAccountDb, encrypterMock } = makeAddAccountDb()
     jest
       .spyOn(encrypterMock, 'encrypt')
@@ -79,7 +79,7 @@ describe('DbAddAccount Usecase', () => {
     await expect(accountPromise).rejects.toThrow()
   })
 
-  test('Sould call AddAccountRepository with correct values', async () => {
+  test('Sould call IAddAccountRepository with correct values', async () => {
     const { addAccountDb, addAccountRepositoryMock } = makeAddAccountDb()
     const addSpy = jest.spyOn(addAccountRepositoryMock, 'add')
     const accountData = {
@@ -96,7 +96,7 @@ describe('DbAddAccount Usecase', () => {
     })
   })
 
-  test('Sould throw if Encrypter throws', async () => {
+  test('Sould throw if IEncrypter throws', async () => {
     const { addAccountDb, addAccountRepositoryMock } = makeAddAccountDb()
     jest
       .spyOn(addAccountRepositoryMock, 'add')

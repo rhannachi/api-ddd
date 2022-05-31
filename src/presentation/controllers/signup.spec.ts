@@ -1,17 +1,17 @@
-import { AccountModel } from '../../domain/models'
-import { AddAccount, AddAccountModel } from '../../domain/usecases'
+import { IAccountModel } from '../../domain/models'
+import { IAddAccount, IAddAccountModel } from '../../domain/usecases'
 import { InvalidParamsError, MissingParamsError, ServerError } from '../errors'
-import { EmailValidator } from '../protocols'
+import { IEmailValidator } from '../protocols'
 import { SignUpController } from './signup'
 
 interface MakeSignupType {
   signup: SignUpController
-  emailValidatorMock: EmailValidator
-  addAccountMock: AddAccount
+  emailValidatorMock: IEmailValidator
+  addAccountMock: IAddAccount
 }
 
-const makeEmailValidator = (): EmailValidator => {
-  class EmailValidatorMock implements EmailValidator {
+const makeEmailValidator = (): IEmailValidator => {
+  class EmailValidatorMock implements IEmailValidator {
     isValid (email: string): boolean {
       return true
     }
@@ -19,9 +19,9 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorMock()
 }
 
-const makeAddAccount = (): AddAccount => {
-  class AddAccountMock implements AddAccount {
-    async add (account: AddAccountModel): Promise<AccountModel> {
+const makeAddAccount = (): IAddAccount => {
+  class AddAccountMock implements IAddAccount {
+    async add (account: IAddAccountModel): Promise<IAccountModel> {
       const fakeAccount = {
         id: 'valid_id',
         name: 'valid_name',
