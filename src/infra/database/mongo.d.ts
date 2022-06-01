@@ -1,4 +1,3 @@
-import { Collection, MongoClient } from 'mongodb'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 
 interface IConnect {
@@ -8,11 +7,7 @@ interface IConnect {
 }
 
 export interface IMongoHelper {
-  client?: MongoClient
   mongoServer?: MongoMemoryServer
-  dbName?: string
   connect: (config: Partial<IConnect>) => Promise<void>
   disconnect: () => Promise<void>
-  getCollection: (name: string) => Collection
-  mapDocument: <T>(document: any) => T
 }
