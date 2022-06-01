@@ -1,10 +1,10 @@
-import { AddAccountRepository } from '../../../data/protocols'
-import { AccountModel } from '../../../domain/models'
-import { AddAccountModel } from '../../../domain/usecases'
+import { IAddAccountRepository } from '../../../data/protocols'
+import { IAccountModel } from '../../../domain/models'
+import { IAddAccountModel } from '../../../domain/usecases'
 import { MongoDbHelper } from './helper'
 
-export class AccountMongoRepository implements AddAccountRepository {
-  async add (accountData: AddAccountModel): Promise<AccountModel> {
+export class AccountMongoRepository implements IAddAccountRepository {
+  async add (accountData: IAddAccountModel): Promise<IAccountModel> {
     try {
       const accountCollection = MongoDbHelper.getCollection('accounts')
 
@@ -19,7 +19,7 @@ export class AccountMongoRepository implements AddAccountRepository {
       if ((insertedAccount?._id) == null) throw new Error('Error inserting contact')
 
       // TODO refacto, use mongoose.model
-      const account = MongoDbHelper.mapDocument<AccountModel>(insertedAccount)
+      const account = MongoDbHelper.mapDocument<IAccountModel>(insertedAccount)
 
       return account
     } catch (error) {

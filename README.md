@@ -1,4 +1,4 @@
-# api-ddd
+# API Typescript Domaine Driven Design
 
 ## Internal stucture
 

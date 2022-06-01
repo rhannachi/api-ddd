@@ -1,8 +1,15 @@
 import { MongoClient, Collection } from 'mongodb'
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import { IMongoHelper } from '../helper'
+import { IMongoHelper } from '../mongo'
 
-export const MongoDbHelper: IMongoHelper = {
+interface IMongoDbHelper extends IMongoHelper {
+  client?: MongoClient
+  dbName?: string
+  getCollection: (name: string) => Collection
+  mapDocument: <T>(document: any) => T
+}
+
+export const MongoDbHelper: IMongoDbHelper = {
   client: undefined,
   mongoServer: undefined,
   dbName: undefined,
