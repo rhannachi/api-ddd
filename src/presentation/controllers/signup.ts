@@ -45,8 +45,8 @@ export class SignUpController implements IController {
       })
 
       return ok(account)
-    } catch (error) {
-      return serverError()
+    } catch (error: unknown) {
+      return serverError(error)
     }
   }
 }
