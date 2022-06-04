@@ -6,10 +6,19 @@ export const badRequest = (error: Error): IHttpResponse => ({
   body: error
 })
 
-export const serverError = (): IHttpResponse => ({
-  statusCode: 500,
-  body: new ServerError()
-})
+export const serverError = (error: unknown): IHttpResponse => {
+  if (error instanceof Error) {
+    return {
+      statusCode: 500,
+      body: new ServerError(error?.stack)
+    }
+  }
+
+  return {
+    statusCode: 500,
+    body: String(error)
+  }
+}
 
 export const ok = (data: IHttpResponse['body']): IHttpResponse => ({
   statusCode: 200,
