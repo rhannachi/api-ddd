@@ -1,8 +1,6 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
-import { IMongoHelper } from '../mongo'
-
-interface IMongooseHelper extends IMongoHelper {}
+import { IMongooseHelper } from './mongo'
 
 export const MongooseHelper: IMongooseHelper = {
   mongoServer: undefined,

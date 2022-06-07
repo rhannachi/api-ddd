@@ -6,7 +6,7 @@ interface IConnect {
   port: number
 }
 
-export interface IMongoHelper {
+export interface IMongooseHelper {
   mongoServer?: MongoMemoryServer
   connect: (config: Partial<IConnect>) => Promise<void>
   disconnect: () => Promise<void>
