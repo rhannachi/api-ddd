@@ -1,8 +1,8 @@
-import { MongoDbHelper } from '../infra/database'
+import { MongooseHelper } from '../infra/database'
 
 const port = process.env.PORT ?? 5050
 
-MongoDbHelper.connect({})
+MongooseHelper.connect({})
   .then(async () => {
     const app = (await import('./config/app')).default
     app.listen(port, () => console.info(`Server at runnint http://localhost:${port}`))

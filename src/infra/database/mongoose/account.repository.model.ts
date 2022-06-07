@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
 import { IAccountModel } from '../../../domain/models'
 
-interface AccountModelDoc extends IAccountModel, Document {}
+interface IAccountModelDoc extends IAccountModel, Document {}
 
 const AccountSchemaFields: Record<keyof Omit<IAccountModel, 'id'>, any> = {
   name: String,
@@ -12,4 +12,4 @@ const AccountSchemaFields: Record<keyof Omit<IAccountModel, 'id'>, any> = {
 const AccountSchema: Schema = new Schema(AccountSchemaFields)
 
 // TODO rename this
-export const AccountModelMongoose = model<AccountModelDoc>('Account', AccountSchema)
+export const AccountModelMongoose = model<IAccountModelDoc>('Account', AccountSchema)
