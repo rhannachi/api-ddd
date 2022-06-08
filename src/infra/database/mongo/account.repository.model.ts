@@ -12,4 +12,4 @@ const AccountSchemaFields: Record<keyof Omit<IAccountModel, 'id'>, any> = {
 const AccountSchema: Schema = new Schema(AccountSchemaFields)
 
 // TODO rename this
-export const AccountModelMongoose = model<IAccountModelDoc>('Account', AccountSchema)
+export const AccountModelMongo = model<IAccountModelDoc>('Account', AccountSchema)

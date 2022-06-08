@@ -1,22 +1,22 @@
-import { AccountMongooseRepository } from './account.repository'
-import { AccountModelMongoose } from './account.repository.model'
-import { MongooseHelper } from './helper'
+import { AccountMongoRepository } from './account.repository'
+import { AccountModelMongo } from './account.repository.model'
+import { MongoHelper } from './helper'
 
-describe('Account Mongoose Repository', () => {
+describe('Account Mongo Repository', () => {
   beforeAll(async () => {
-    await MongooseHelper.connect({})
+    await MongoHelper.connect({})
   })
 
   afterAll(async () => {
-    await MongooseHelper.disconnect()
+    await MongoHelper.disconnect()
   })
 
   beforeEach(async () => {
-    await AccountModelMongoose.deleteMany({})
+    await AccountModelMongo.deleteMany({})
   })
 
   test('Sould return an account on success', async () => {
-    const accountMongooseRepository = new AccountMongooseRepository()
+    const accountMongooseRepository = new AccountMongoRepository()
 
     const account = await accountMongooseRepository.add({
       name: 'any_name',

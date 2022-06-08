@@ -1,7 +1,7 @@
 import { ILogErrorRepository } from '../../../data/protocols'
 import { LogModelMongoose } from './log.repository.model'
 
-export class LogMongooseRepository implements ILogErrorRepository {
+export class LogMongoRepository implements ILogErrorRepository {
   async log (stack: string): Promise<void> {
     const log = new LogModelMongoose({
       stack,

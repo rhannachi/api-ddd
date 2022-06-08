@@ -1,19 +1,19 @@
 
 import request from 'supertest'
-import { AccountModelMongoose, MongooseHelper } from '../../infra/database'
+import { AccountModelMongo, MongoHelper } from '../../infra/database'
 import app from '../config/app'
 
 describe('Signup Routes', () => {
   beforeAll(async () => {
-    await MongooseHelper.connect({})
+    await MongoHelper.connect({})
   })
 
   afterAll(async () => {
-    await MongooseHelper.disconnect()
+    await MongoHelper.disconnect()
   })
 
   beforeEach(async () => {
-    await AccountModelMongoose.deleteMany({})
+    await AccountModelMongo.deleteMany({})
   })
 
   test('Should return an account on success', async () => {
