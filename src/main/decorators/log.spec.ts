@@ -15,7 +15,7 @@ interface IMakeSignup {
 class SignUpControllerMock implements IController {
   async handle (httprequest: IHttpRequest): Promise<IHttpResponse> {
     const httpResponse: IHttpResponse = {
-      statusCode: 200,
+      status: 200,
       body: {
         name: 'ramzi'
       }
@@ -51,8 +51,8 @@ const makeSignup = (): IMakeSignup => {
   }
 }
 
-describe('Log Controller Decorator', () => {
-  test('Should call function handle from the Controller', async () => {
+describe('Log Decorator Controller', () => {
+  test('Call function handle from the Controller', async () => {
     const { signUpController, signUpControllerWithLog } = makeSignup()
 
     const handleSpy = jest.spyOn(signUpController, 'handle')
@@ -81,7 +81,7 @@ describe('Log Controller Decorator', () => {
     }
     const httpResponse = await signUpControllerWithLog.handle(httpRequest)
     expect(httpResponse).toEqual({
-      statusCode: 200,
+      status: 200,
       body: {
         name: 'ramzi'
       }

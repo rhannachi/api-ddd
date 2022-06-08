@@ -69,7 +69,7 @@ describe('SignUp Controller', () => {
     }
     const httpresponse = await signup.handle(httprequest)
 
-    expect(httpresponse?.statusCode).toBe(400)
+    expect(httpresponse?.status).toBe(400)
     expect(httpresponse?.body).toEqual(new MissingParamsError('name'))
   })
 
