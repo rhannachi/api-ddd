@@ -1,16 +1,17 @@
 import { IAccountModel } from '../../domain/models'
 import { IAddAccount, IAddAccountModel } from '../../domain/usecases'
 import { InvalidParamsError, MissingParamsError, ServerError } from '../errors'
-import { IEmailValidator } from '../protocols'
+import { ok, badRequest, serverError } from '../helper'
+import { IEmailValidator, IHttpRequest } from '../protocols'
 import { SignUpController } from './signup'
 
-interface MakeSignupType {
+interface IMockSignup {
   signup: SignUpController
   emailValidatorMock: IEmailValidator
   addAccountMock: IAddAccount
 }
 
-const makeEmailValidator = (): IEmailValidator => {
+const mockEmailValidator = (): IEmailValidator => {
   class EmailValidatorMock implements IEmailValidator {
     isValid (email: string): boolean {
       return true
@@ -19,25 +20,34 @@ const makeEmailValidator = (): IEmailValidator => {
   return new EmailValidatorMock()
 }
 
-const makeAddAccount = (): IAddAccount => {
+const mockHttpRequest = (): IHttpRequest => ({
+  body: {
+    email: 'email@gmail.com',
+    name: 'name',
+    password: 'password',
+    passwordConfirmation: 'password'
+  }
+})
+
+const mockResponseAddAccount = (): IAccountModel => ({
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'valid_email@gmail.com',
+  password: 'valid_password'
+})
+
+const mockAddAccount = (): IAddAccount => {
   class AddAccountMock implements IAddAccount {
     async add (account: IAddAccountModel): Promise<IAccountModel> {
-      const fakeAccount = {
-        id: 'valid_id',
-        name: 'valid_name',
-        email: 'valid_email@gmail.com',
-        password: 'valid_password'
-      }
-
-      return await Promise.resolve(fakeAccount)
+      return await Promise.resolve(mockResponseAddAccount())
     }
   }
   return new AddAccountMock()
 }
 
-const makeSignup = (): MakeSignupType => {
-  const emailValidatorMock = makeEmailValidator()
-  const addAccountMock = makeAddAccount()
+const mockSignup = (): IMockSignup => {
+  const emailValidatorMock = mockEmailValidator()
+  const addAccountMock = mockAddAccount()
   const signup = new SignUpController(emailValidatorMock, addAccountMock)
 
   return {
@@ -48,181 +58,133 @@ const makeSignup = (): MakeSignupType => {
 }
 
 describe('SignUp Controller', () => {
-  test('should return 400 if no name is provided', async () => {
-    const { signup } = makeSignup()
+  test('400 if no name is provided', async () => {
+    const { signup } = mockSignup()
     const httprequest = {
       body: {
-        email: 'my_email@gmail.com',
-        password: 'my_password',
-        passwordConfirmation: 'my_password'
+        email: 'email@gmail.com',
+        password: 'password',
+        passwordConfirmation: 'password'
       }
     }
     const httpresponse = await signup.handle(httprequest)
+
     expect(httpresponse?.statusCode).toBe(400)
     expect(httpresponse?.body).toEqual(new MissingParamsError('name'))
   })
 
-  test('should return 400 if no email is provided', async () => {
-    const { signup } = makeSignup()
+  test('400 if no email is provided', async () => {
+    const { signup } = mockSignup()
     const httprequest = {
       body: {
-        name: 'my_name',
-        password: 'my_password',
-        passwordConfirmation: 'my_password'
+        name: 'name',
+        password: 'password',
+        passwordConfirmation: 'password'
       }
     }
     const httpresponse = await signup.handle(httprequest)
-    expect(httpresponse?.statusCode).toBe(400)
-    expect(httpresponse?.body).toEqual(new MissingParamsError('email'))
+
+    expect(httpresponse).toEqual(badRequest(new MissingParamsError('email')))
   })
 
-  test('should return 400 if no password is provided', async () => {
-    const { signup } = makeSignup()
+  test('400 if no password is provided', async () => {
+    const { signup } = mockSignup()
     const httprequest = {
       body: {
-        email: 'my_email@gmail.com',
-        name: 'my_name',
-        passwordConfirmation: 'my_password'
+        email: 'email@gmail.com',
+        name: 'name',
+        passwordConfirmation: 'password'
       }
     }
     const httpresponse = await signup.handle(httprequest)
-    expect(httpresponse?.statusCode).toBe(400)
-    expect(httpresponse?.body).toEqual(new MissingParamsError('password'))
+
+    expect(httpresponse).toEqual(badRequest(new MissingParamsError('password')))
   })
 
-  test('should return 400 if no password confirmation is provided', async () => {
-    const { signup } = makeSignup()
+  test('400 if no password confirmation is provided', async () => {
+    const { signup } = mockSignup()
     const httprequest = {
       body: {
-        email: 'my_email@gmail.com',
-        name: 'my_name',
-        password: 'my_password'
+        email: 'email@gmail.com',
+        name: 'name',
+        password: 'password'
       }
     }
     const httpresponse = await signup.handle(httprequest)
-    expect(httpresponse?.statusCode).toBe(400)
-    expect(httpresponse?.body).toEqual(
-      new MissingParamsError('passwordConfirmation')
-    )
+
+    expect(httpresponse).toEqual(badRequest(new MissingParamsError('passwordConfirmation')))
   })
 
-  test('should return 400 if password confirmation fails', async () => {
-    const { signup } = makeSignup()
+  test('400 if password confirmation fails', async () => {
+    const { signup } = mockSignup()
     const httprequest = {
       body: {
-        email: 'my_email@gmail.com',
-        name: 'my_name',
-        password: 'my_password',
-        passwordConfirmation: 'invalid_password'
+        email: 'email@gmail.com',
+        name: 'name',
+        password: 'password',
+        passwordConfirmation: '_password'
       }
     }
     const httpresponse = await signup.handle(httprequest)
-    expect(httpresponse?.statusCode).toBe(400)
-    expect(httpresponse?.body).toEqual(
-      new InvalidParamsError('passwordConfirmation')
-    )
+
+    expect(httpresponse).toEqual(badRequest(new InvalidParamsError('passwordConfirmation')))
   })
 
-  test('should return 400 if an invalid email is provided', async () => {
-    const { signup, emailValidatorMock } = makeSignup()
+  test('400 if an invalid email', async () => {
+    const { signup, emailValidatorMock } = mockSignup()
 
     jest.spyOn(emailValidatorMock, 'isValid').mockReturnValueOnce(false)
+    const httpresponse = await signup.handle(mockHttpRequest())
 
-    const httprequest = {
-      body: {
-        email: 'invalid_email@gmail.com',
-        name: 'my_name',
-        password: 'my_password',
-        passwordConfirmation: 'my_password'
-      }
-    }
-    const httpresponse = await signup.handle(httprequest)
-    expect(httpresponse?.statusCode).toBe(400)
-    expect(httpresponse?.body).toEqual(new InvalidParamsError('email'))
+    expect(httpresponse).toEqual(badRequest(new InvalidParamsError('email')))
   })
 
-  test('should call EmailValidator with correct email', async () => {
-    const { signup, emailValidatorMock } = makeSignup()
+  test('call EmailValidator with correct email', async () => {
+    const { signup, emailValidatorMock } = mockSignup()
 
     const isValidSpy = jest.spyOn(emailValidatorMock, 'isValid')
+    await signup.handle(mockHttpRequest())
 
-    const httprequest = {
-      body: {
-        email: 'my_email@gmail.com',
-        name: 'my_name',
-        password: 'my_password',
-        passwordConfirmation: 'my_password'
-      }
-    }
-    await signup.handle(httprequest)
-    expect(isValidSpy).toHaveBeenCalledWith('my_email@gmail.com')
+    expect(isValidSpy).toHaveBeenCalledWith('email@gmail.com')
   })
 
-  test('should return 500 if EmailValidator throws', async () => {
-    const { signup, emailValidatorMock } = makeSignup()
+  test('500 if EmailValidator throws', async () => {
+    const { signup, emailValidatorMock } = mockSignup()
 
     jest.spyOn(emailValidatorMock, 'isValid').mockImplementationOnce(() => {
       throw new Error()
     })
+    const httpresponse = await signup.handle(mockHttpRequest())
 
-    const httprequest = {
-      body: {
-        email: 'my_email@gmail.com',
-        name: 'my_name',
-        password: 'my_password',
-        passwordConfirmation: 'my_password'
-      }
-    }
-    const httpresponse = await signup.handle(httprequest)
-    expect(httpresponse?.statusCode).toBe(500)
-    expect(httpresponse?.body).toEqual(new ServerError())
+    expect(httpresponse).toEqual(serverError(new ServerError()))
   })
 
-  test('should return 500 if AddAccount throws', async () => {
-    const { signup, addAccountMock } = makeSignup()
+  test('500 if AddAccount throws', async () => {
+    const { signup, addAccountMock } = mockSignup()
 
     jest.spyOn(addAccountMock, 'add').mockImplementationOnce(() => {
       throw new Error()
     })
+    const httpresponse = await signup.handle(mockHttpRequest())
 
-    const httprequest = {
-      body: {
-        email: 'my_email@gmail.com',
-        name: 'my_name',
-        password: 'my_password',
-        passwordConfirmation: 'my_password'
-      }
-    }
-    const httpresponse = await signup.handle(httprequest)
-    expect(httpresponse?.statusCode).toBe(500)
-    expect(httpresponse?.body).toEqual(new ServerError())
+    expect(httpresponse).toEqual(serverError(new ServerError()))
   })
 
-  test('should call AddAccount with correct values', async () => {
-    const { signup, addAccountMock } = makeSignup()
+  test('call AddAccount with correct values', async () => {
+    const { signup, addAccountMock } = mockSignup()
 
     const addSpy = jest.spyOn(addAccountMock, 'add')
-
-    const httprequest = {
-      body: {
-        email: 'my_email@gmail.com',
-        name: 'my_name',
-        password: 'my_password',
-        passwordConfirmation: 'my_password'
-      }
-    }
-
-    await signup.handle(httprequest)
+    await signup.handle(mockHttpRequest())
 
     expect(addSpy).toHaveBeenCalledWith({
-      email: 'my_email@gmail.com',
-      name: 'my_name',
-      password: 'my_password'
+      email: 'email@gmail.com',
+      name: 'name',
+      password: 'password'
     })
   })
 
-  test('should return 200 if valid data is provided', async () => {
-    const { signup } = makeSignup()
+  test('200 if valid data is provided', async () => {
+    const { signup } = mockSignup()
 
     const httprequest = {
       body: {
@@ -233,12 +195,6 @@ describe('SignUp Controller', () => {
       }
     }
     const httpresponse = await signup.handle(httprequest)
-    expect(httpresponse?.statusCode).toBe(200)
-    expect(httpresponse?.body).toEqual({
-      id: 'valid_id',
-      name: 'valid_name',
-      email: 'valid_email@gmail.com',
-      password: 'valid_password'
-    })
+    expect(httpresponse).toEqual(ok(mockResponseAddAccount()))
   })
 })
