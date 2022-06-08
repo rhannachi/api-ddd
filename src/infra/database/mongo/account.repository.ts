@@ -1,4 +1,4 @@
-import { IAddAccountRepository } from '../../../data/protocols'
+import { IAddAccountRepository } from '../../../application/protocols'
 import { IAccountModel } from '../../../domain/models'
 import { IAddAccountModel } from '../../../domain/usecases'
 import { AccountModelMongo } from './account.repository.model'

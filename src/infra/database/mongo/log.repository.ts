@@ -1,4 +1,4 @@
-import { ILogErrorRepository } from '../../../data/protocols'
+import { ILogErrorRepository } from '../../../application/protocols'
 import { LogModelMongoose } from './log.repository.model'
 
 export class LogMongoRepository implements ILogErrorRepository {

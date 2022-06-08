@@ -1,4 +1,4 @@
-import { ILogErrorRepository } from '../../data/protocols'
+import { ILogErrorRepository } from '../../application/protocols'
 import { serverError } from '../../presentation/helper'
 import {
   IController,
