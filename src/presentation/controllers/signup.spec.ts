@@ -1,5 +1,4 @@
-import { IAccountModel } from '../../domain/models'
-import { IAddAccount, IAddAccountModel } from '../../domain/usecases'
+import { IAccountModel, IAddAccount, IAddAccountModel } from '../../domain'
 import { InvalidParamsError, MissingParamsError, ServerError } from '../errors'
 import { ok, badRequest, serverError } from '../helper'
 import { IEmailValidator, IHttpRequest } from '../protocols'

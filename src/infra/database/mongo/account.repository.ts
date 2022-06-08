@@ -1,6 +1,5 @@
 import { IAddAccountRepository } from '../../../application/protocols'
-import { IAccountModel } from '../../../domain/models'
-import { IAddAccountModel } from '../../../domain/usecases'
+import { IAccountModel, IAddAccountModel } from '../../../domain'
 import { AccountModelMongo } from './account.repository.model'
 
 export class AccountMongoRepository implements IAddAccountRepository {

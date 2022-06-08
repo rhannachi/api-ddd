@@ -1,5 +1,5 @@
-import { IAccountModel } from '../../domain/models'
-import { IAddAccount, IAddAccountModel } from '../../domain/usecases'
+
+import { IAccountModel, IAddAccount, IAddAccountModel } from '../../domain'
 import { IAddAccountRepository, IEncrypter } from '../protocols'
 
 export class AddAccount implements IAddAccount {
