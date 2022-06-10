@@ -3,13 +3,13 @@ import { IAccountModel, IAddAccountModel } from '../../domain'
 import { IAddAccountRepository, IEncrypter } from '../protocols'
 import { AddAccount } from './addAccount'
 
-interface MakeAddAccountDbType {
+interface MockAddAccountDbType {
   addAccount: AddAccount
-  encrypterMock: IEncrypter
-  addAccountRepositoryMock: IAddAccountRepository
+  encrypter: IEncrypter
+  addAccountRepository: IAddAccountRepository
 }
 
-const makeEncrypter = (): IEncrypter => {
+const mockEncrypter = (): IEncrypter => {
   class EncrypterMock implements IEncrypter {
     async encrypt (value: string): Promise<string> {
       return await Promise.resolve('hashed_password')
@@ -19,112 +19,97 @@ const makeEncrypter = (): IEncrypter => {
   return new EncrypterMock()
 }
 
-const makeAddAccountRepository = (): IAddAccountRepository => {
+const mockAddAccountRepository = (): IAddAccountRepository => {
   class AddAccountRepositoryMock implements IAddAccountRepository {
     async add (accountData: IAddAccountModel): Promise<IAccountModel> {
-      const fakeAccount = {
-        id: 'valid_id',
-        name: 'valid_name',
-        email: 'valid_email',
+      const mockAccount = {
+        id: 'id',
+        name: 'name',
+        email: 'email',
         password: 'hashed_password'
       }
-      return await Promise.resolve(fakeAccount)
+      return await Promise.resolve(mockAccount)
     }
   }
 
   return new AddAccountRepositoryMock()
 }
 
-const makeAddAccountDb = (): MakeAddAccountDbType => {
-  const encrypterMock = makeEncrypter()
-  const addAccountRepositoryMock = makeAddAccountRepository()
+const mockAddAccountDb = (): MockAddAccountDbType => {
+  const encrypter = mockEncrypter()
+  const addAccountRepository = mockAddAccountRepository()
   const addAccount = new AddAccount(
-    encrypterMock,
-    addAccountRepositoryMock
+    encrypter,
+    addAccountRepository
   )
 
   return {
     addAccount,
-    encrypterMock,
-    addAccountRepositoryMock
+    encrypter,
+    addAccountRepository
   }
+}
+
+const mockAddAccountData = {
+  name: 'name',
+  email: 'email',
+  password: 'password'
 }
 
 describe('DbAddAccount Usecase', () => {
   test('Sould call IEncrypter with correct password', async () => {
-    const { addAccount, encrypterMock } = makeAddAccountDb()
-    const encryptSpy = jest.spyOn(encrypterMock, 'encrypt')
-    const accountData = {
-      name: 'valid_name',
-      email: 'valid_email',
-      password: 'valid_password'
-    }
-    await addAccount.add(accountData)
+    const { addAccount, encrypter } = mockAddAccountDb()
 
-    expect(encryptSpy).toHaveBeenCalledWith('valid_password')
+    const encryptSpy = jest.spyOn(encrypter, 'encrypt')
+    await addAccount.add(mockAddAccountData)
+
+    expect(encryptSpy).toHaveBeenCalledWith('password')
   })
 
-  test('Sould throw if IEncrypter throws', async () => {
-    const { addAccount, encrypterMock } = makeAddAccountDb()
+  test('throw if IEncrypter throws', async () => {
+    const { addAccount, encrypter } = mockAddAccountDb()
     jest
-      .spyOn(encrypterMock, 'encrypt')
+      .spyOn(encrypter, 'encrypt')
       .mockReturnValueOnce(Promise.reject(new Error()))
-    const accountData = {
-      name: 'valid_name',
-      email: 'valid_email',
-      password: 'valid_password'
-    }
-    const accountPromise = addAccount.add(accountData)
+
+    const accountPromise = addAccount.add(mockAddAccountData)
 
     await expect(accountPromise).rejects.toThrow()
   })
 
-  test('Sould call IAddAccountRepository with correct values', async () => {
-    const { addAccount, addAccountRepositoryMock } = makeAddAccountDb()
-    const addSpy = jest.spyOn(addAccountRepositoryMock, 'add')
-    const accountData = {
-      name: 'valid_name',
-      email: 'valid_email',
-      password: 'valid_password'
-    }
-    await addAccount.add(accountData)
+  test('call IAddAccountRepository with correct values', async () => {
+    const { addAccount, addAccountRepository } = mockAddAccountDb()
+    const addSpy = jest.spyOn(addAccountRepository, 'add')
+
+    await addAccount.add(mockAddAccountData)
 
     expect(addSpy).toHaveBeenCalledWith({
-      name: 'valid_name',
-      email: 'valid_email',
+      name: 'name',
+      email: 'email',
       password: 'hashed_password'
     })
   })
 
-  test('Sould throw if IEncrypter throws', async () => {
-    const { addAccount, addAccountRepositoryMock } = makeAddAccountDb()
+  test('throw if IEncrypter throws', async () => {
+    const { addAccount, addAccountRepository } = mockAddAccountDb()
     jest
-      .spyOn(addAccountRepositoryMock, 'add')
+      .spyOn(addAccountRepository, 'add')
       .mockReturnValueOnce(Promise.reject(new Error()))
-    const accountData = {
-      name: 'valid_name',
-      email: 'valid_email',
-      password: 'valid_password'
-    }
-    const accountPromise = addAccount.add(accountData)
+
+    const accountPromise = addAccount.add(mockAddAccountData)
 
     await expect(accountPromise).rejects.toThrow()
   })
 
-  test('Sould return an account on success', async () => {
-    const { addAccount } = makeAddAccountDb()
+  test('return an account on success', async () => {
+    const { addAccount } = mockAddAccountDb()
 
-    const accountData = {
-      name: 'valid_name',
-      email: 'valid_email',
-      password: 'valid_password'
-    }
-    const account = await addAccount.add(accountData)
+    const account = await addAccount.add(mockAddAccountData)
 
     expect(account).toEqual({
-      id: 'valid_id',
-      name: 'valid_name',
-      email: 'valid_email',
+      id: 'id',
+      name: 'name',
+      email: 'email',
       password: 'hashed_password'
     })
   })
