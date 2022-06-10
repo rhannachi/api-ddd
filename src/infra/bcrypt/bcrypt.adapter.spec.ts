@@ -7,12 +7,12 @@ jest.mock('bcrypt', () => ({
   }
 }))
 
-interface MakeSignupType {
+interface MockSignupType {
   bcryptAdapter: BcryptAdapter
   salt: number
 }
 
-const makeBcryptAdapter = (): MakeSignupType => {
+const mockBcryptAdapter = (): MockSignupType => {
   const salt = 12
   const bcryptAdapter = new BcryptAdapter(salt)
 
@@ -23,25 +23,25 @@ const makeBcryptAdapter = (): MakeSignupType => {
 }
 
 describe('Bcrypt Adapter', () => {
-  test('Should call bcrypt with correct value', async () => {
-    const { bcryptAdapter, salt } = makeBcryptAdapter()
+  test('call bcrypt with correct value', async () => {
+    const { bcryptAdapter, salt } = mockBcryptAdapter()
     const hashSpy = jest.spyOn(bcrypt, 'hash')
-    await bcryptAdapter.encrypt('any_value')
+    await bcryptAdapter.encrypt('value')
 
-    expect(hashSpy).toHaveBeenCalledWith('any_value', salt)
+    expect(hashSpy).toHaveBeenCalledWith('value', salt)
   })
 
-  test('Should return a hash on success', async () => {
-    const { bcryptAdapter } = makeBcryptAdapter()
+  test('return a hash on success', async () => {
+    const { bcryptAdapter } = mockBcryptAdapter()
     jest.spyOn(bcrypt, 'hash')
 
-    const hash = await bcryptAdapter.encrypt('any_value')
+    const hash = await bcryptAdapter.encrypt('value')
 
     expect(hash).toEqual('hash_value')
   })
 
-  test('Should throw if bcrypt throws', async () => {
-    const { bcryptAdapter } = makeBcryptAdapter()
+  test('throw if bcrypt throws', async () => {
+    const { bcryptAdapter } = mockBcryptAdapter()
     jest
       .spyOn(bcrypt, 'hash')
       .mockImplementationOnce(
@@ -49,7 +49,7 @@ describe('Bcrypt Adapter', () => {
           throw new Error()
         }
       )
-    const encryptPromise = bcryptAdapter.encrypt('any_value')
+    const encryptPromise = bcryptAdapter.encrypt('value')
 
     await expect(encryptPromise).rejects.toThrow()
   })

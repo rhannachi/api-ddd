@@ -1,5 +1,5 @@
-import { ILogErrorRepository } from '../../data/protocols'
-import { serverError } from '../../presentation/helper'
+import { ILogErrorRepository } from '../../application/protocols'
+import { ok, serverError } from '../../presentation/helper'
 import {
   IController,
   IHttpRequest,
@@ -7,21 +7,14 @@ import {
 } from '../../presentation/protocols'
 import { LogControllerDecorator } from './log'
 
-interface IMakeSignup {
+interface IMockSignup {
   signUpController: SignUpControllerMock
-  signUpControllerWithLog: LogControllerDecorator
+  logControllerDecorator: LogControllerDecorator
   logErrorRepository: LogErrorRepositoryMock
 }
 class SignUpControllerMock implements IController {
   async handle (httprequest: IHttpRequest): Promise<IHttpResponse> {
-    const httpResponse: IHttpResponse = {
-      statusCode: 200,
-      body: {
-        name: 'ramzi'
-      }
-    }
-
-    return await Promise.resolve(httpResponse)
+    return await Promise.resolve(ok(mockHttpRequest))
   }
 }
 
@@ -31,79 +24,58 @@ class LogErrorRepositoryMock implements ILogErrorRepository {
   }
 }
 
-const makeFakeError = (): Error => {
+const mockError = (): IHttpResponse => {
   const error = new Error()
   error.stack = 'fake_error'
-  return error
+  return serverError(error)
 }
 
-const makeSignup = (): IMakeSignup => {
+const mockSignup = (): IMockSignup => {
   const signUpController = new SignUpControllerMock()
   const logErrorRepository = new LogErrorRepositoryMock()
-  const signUpControllerWithLog = new LogControllerDecorator(
+  const logControllerDecorator = new LogControllerDecorator(
     signUpController, logErrorRepository
   )
 
   return {
     signUpController,
-    signUpControllerWithLog,
+    logControllerDecorator,
     logErrorRepository
   }
 }
 
-describe('Log Controller Decorator', () => {
-  test('Should call function handle from the Controller', async () => {
-    const { signUpController, signUpControllerWithLog } = makeSignup()
+const mockHttpRequest: IHttpRequest = {
+  body: {
+    email: 'email@gmail.com',
+    name: 'name',
+    password: 'password',
+    passwordConfirmation: 'password'
+  }
+}
+
+describe('Log Decorator Controller', () => {
+  test('Call function handle from the Controller', async () => {
+    const { signUpController, logControllerDecorator } = mockSignup()
 
     const handleSpy = jest.spyOn(signUpController, 'handle')
-    const httpRequest: IHttpRequest = {
-      body: {
-        email: 'mail@mail.com',
-        name: 'name',
-        password: 'password',
-        passwordConfirmation: 'password'
-      }
-    }
-    await signUpControllerWithLog.handle(httpRequest)
-    expect(handleSpy).toHaveBeenCalledWith(httpRequest)
+    await logControllerDecorator.handle(mockHttpRequest)
+    expect(handleSpy).toHaveBeenCalledWith(mockHttpRequest)
   })
 
   test('Return the same result of the controller', async () => {
-    const { signUpControllerWithLog } = makeSignup()
+    const { logControllerDecorator } = mockSignup()
 
-    const httpRequest: IHttpRequest = {
-      body: {
-        email: 'mail@mail.com',
-        name: 'name',
-        password: 'password',
-        passwordConfirmation: 'password'
-      }
-    }
-    const httpResponse = await signUpControllerWithLog.handle(httpRequest)
-    expect(httpResponse).toEqual({
-      statusCode: 200,
-      body: {
-        name: 'ramzi'
-      }
-    })
+    const httpResponse = await logControllerDecorator.handle(mockHttpRequest)
+    expect(httpResponse).toEqual(ok(mockHttpRequest))
   })
 
   test('Call Log error repository with correct error', async () => {
-    const { signUpController, signUpControllerWithLog, logErrorRepository } = makeSignup()
-    const error = makeFakeError()
+    const { signUpController, logControllerDecorator, logErrorRepository } = mockSignup()
 
-    jest.spyOn(signUpController, 'handle').mockReturnValueOnce(Promise.resolve(serverError(error)))
+    jest.spyOn(signUpController, 'handle').mockReturnValueOnce(Promise.resolve(mockError()))
     const logSpy = jest.spyOn(logErrorRepository, 'log')
+    await logControllerDecorator.handle(mockHttpRequest)
 
-    const httpRequest: IHttpRequest = {
-      body: {
-        email: 'mail@mail.com',
-        name: 'name',
-        password: 'password',
-        passwordConfirmation: 'password'
-      }
-    }
-    await signUpControllerWithLog.handle(httpRequest)
     expect(logSpy).toHaveBeenCalledWith('fake_error')
   })
 })

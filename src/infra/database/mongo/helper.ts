@@ -1,10 +1,19 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
-import { IMongoHelper } from '../mongo'
 
-interface IMongooseHelper extends IMongoHelper {}
+interface IConnect {
+  name: string
+  ip: string
+  port: number
+}
 
-export const MongooseHelper: IMongooseHelper = {
+interface IMongoHelper {
+  mongoServer?: MongoMemoryServer
+  connect: (config: Partial<IConnect>) => Promise<void>
+  disconnect: () => Promise<void>
+}
+
+export const MongoHelper: IMongoHelper = {
   mongoServer: undefined,
 
   async connect ({ name = '', ip = '127.0.0.1', port = 27017 }): Promise<void> {
