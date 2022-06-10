@@ -1,4 +1,4 @@
-import { IAccountModel, IAddAccount, IAddAccountModel } from '../../domain'
+import { IUserModel, IAddUser, IAddUserModel } from '../../domain/user'
 import { InvalidParamsError, MissingParamsError, ServerError } from '../errors'
 import { ok, badRequest, serverError } from '../helper'
 import { IEmailValidation, IHttpRequest } from '../protocols'
@@ -7,7 +7,7 @@ import { SignUpController } from './signup'
 interface IMockSignup {
   signUpController: SignUpController
   emailValidation: IEmailValidation
-  addAccount: IAddAccount
+  addUser: IAddUser
 }
 
 const mockEmailValidation = (): IEmailValidation => {
@@ -28,31 +28,31 @@ const mockHttpRequest: IHttpRequest = {
   }
 }
 
-const mockResponseAddAccount: IAccountModel = {
+const mockResponseAddUser: IUserModel = {
   id: 'valid_id',
   name: 'valid_name',
   email: 'valid_email@gmail.com',
   password: 'valid_password'
 }
 
-const mockAddAccount = (): IAddAccount => {
-  class AddAccountMock implements IAddAccount {
-    async add (account: IAddAccountModel): Promise<IAccountModel> {
-      return await Promise.resolve(mockResponseAddAccount)
+const mockAddUser = (): IAddUser => {
+  class AddUserMock implements IAddUser {
+    async add (user: IAddUserModel): Promise<IUserModel> {
+      return await Promise.resolve(mockResponseAddUser)
     }
   }
-  return new AddAccountMock()
+  return new AddUserMock()
 }
 
 const mockSignup = (): IMockSignup => {
   const emailValidation = mockEmailValidation()
-  const addAccount = mockAddAccount()
-  const signUpController = new SignUpController(emailValidation, addAccount)
+  const addUser = mockAddUser()
+  const signUpController = new SignUpController(emailValidation, addUser)
 
   return {
     signUpController,
     emailValidation,
-    addAccount
+    addUser
   }
 }
 
@@ -158,10 +158,10 @@ describe('SignUp Controller', () => {
     expect(httpresponse).toEqual(serverError(new ServerError()))
   })
 
-  test('500 if AddAccount throws', async () => {
-    const { signUpController, addAccount } = mockSignup()
+  test('500 if AddUser throws', async () => {
+    const { signUpController, addUser } = mockSignup()
 
-    jest.spyOn(addAccount, 'add').mockImplementationOnce(() => {
+    jest.spyOn(addUser, 'add').mockImplementationOnce(() => {
       throw new Error()
     })
     const httpresponse = await signUpController.handle(mockHttpRequest)
@@ -169,10 +169,10 @@ describe('SignUp Controller', () => {
     expect(httpresponse).toEqual(serverError(new ServerError()))
   })
 
-  test('call AddAccount with correct values', async () => {
-    const { signUpController, addAccount } = mockSignup()
+  test('call AddUser with correct values', async () => {
+    const { signUpController, addUser } = mockSignup()
 
-    const addSpy = jest.spyOn(addAccount, 'add')
+    const addSpy = jest.spyOn(addUser, 'add')
     await signUpController.handle(mockHttpRequest)
 
     expect(addSpy).toHaveBeenCalledWith({
@@ -194,6 +194,6 @@ describe('SignUp Controller', () => {
       }
     }
     const httpresponse = await signUpController.handle(httprequest)
-    expect(httpresponse).toEqual(ok(mockResponseAddAccount))
+    expect(httpresponse).toEqual(ok(mockResponseAddUser))
   })
 })
