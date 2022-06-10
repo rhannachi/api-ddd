@@ -1,1 +1,1 @@
-export * from './emailValidator.adapter'
+export * from './emailValidation.adapter'
