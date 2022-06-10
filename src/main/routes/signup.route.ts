@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { expressAdapter } from '../adapters'
-import { makeSignupController } from '../factories/signup'
+import { makeSignupController } from '../factories'
 
 export const signup = (router: Router): void => {
   // TODO fix any type

@@ -1,15 +1,15 @@
-import { IAddAccount } from '../../domain'
+import { IAddUser } from '../../domain/user'
 import { InvalidParamsError, MissingParamsError } from '../errors'
 import { badRequest, ok, serverError } from '../helper'
 import { IController, IHttpRequest, IHttpResponse, IEmailValidation } from '../protocols'
 
 export class SignUpController implements IController {
   private readonly emailValidation: IEmailValidation
-  private readonly addAccount: IAddAccount
+  private readonly addUser: IAddUser
 
-  constructor (emailValidation: IEmailValidation, addAccount: IAddAccount) {
+  constructor (emailValidation: IEmailValidation, addUser: IAddUser) {
     this.emailValidation = emailValidation
-    this.addAccount = addAccount
+    this.addUser = addUser
   }
 
   async handle (httprequest: IHttpRequest): Promise<IHttpResponse> {
@@ -38,13 +38,13 @@ export class SignUpController implements IController {
         return badRequest(new InvalidParamsError('email'))
       }
 
-      const account = await this.addAccount.add({
+      const user = await this.addUser.add({
         name,
         email,
         password
       })
 
-      return ok(account)
+      return ok(user)
     } catch (error: unknown) {
       return serverError(error)
     }

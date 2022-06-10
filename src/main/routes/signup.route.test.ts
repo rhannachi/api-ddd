@@ -1,6 +1,6 @@
 
 import request from 'supertest'
-import { AccountModelMongo, MongoHelper } from '../../infra/database'
+import { MongoHelper, UserModelMongo } from '../../infra/mongo'
 import app from '../config/app'
 
 describe('Signup Routes', () => {
@@ -13,10 +13,10 @@ describe('Signup Routes', () => {
   })
 
   beforeEach(async () => {
-    await AccountModelMongo.deleteMany({})
+    await UserModelMongo.deleteMany({})
   })
 
-  test('Should return an account on success', async () => {
+  test('Should return an user on success', async () => {
     await request(app)
       .post('/api/signup')
       .send({
