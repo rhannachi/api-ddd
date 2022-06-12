@@ -1,4 +1,4 @@
-
+/* eslint-disable jest/expect-expect */
 import request from 'supertest'
 import app from '../config/app'
 

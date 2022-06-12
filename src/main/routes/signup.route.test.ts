@@ -1,6 +1,7 @@
+/* eslint-disable jest/expect-expect */
 
 import request from 'supertest'
-import { MongoHelper, UserModelMongo } from '../../infra/mongo'
+import { MongoHelper, UserModelMongo } from '@/infra/mongo'
 import app from '../config/app'
 
 describe('Signup Routes', () => {
@@ -23,7 +24,7 @@ describe('Signup Routes', () => {
         name: 'ramzi',
         email: 'ramzi@gmail.com',
         password: '321',
-        passwordConfirmation: '321'
+        passwordConfirmation: '321',
       })
       .expect(200)
   })

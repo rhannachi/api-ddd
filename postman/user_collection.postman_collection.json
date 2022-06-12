@@ -1,0 +1,299 @@
+{
+	"info": {
+		"_postman_id": "76042744-3859-445b-a94a-574f03bba82a",
+		"name": "user collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"ramzi\",\n    \"email\": \"ramzi@gmail.com\",\n    \"password\": \"321\",\n    \"passwordConfirmation\": \"321\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/signup",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200: return an user on success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ramzi\",\n    \"email\": \"ramzi@gmail.com\",\n    \"password\": \"321\",\n    \"passwordConfirmation\": \"321\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "access-control-alloaw-origin",
+							"value": "*"
+						},
+						{
+							"key": "access-control-alloaw-methods",
+							"value": "*"
+						},
+						{
+							"key": "access-control-alloaw-headers",
+							"value": "*"
+						},
+						{
+							"key": "Content-Length",
+							"value": "157"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"9d-qZVe0N+qKRPa46QNKB822NEtzuw\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 11 Jun 2022 11:03:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"ramzi\",\n    \"email\": \"ramzi@gmail.com\",\n    \"password\": \"$2b$12$zjKDRF8h8/wswNBMwlyLKODFikRZ/DCZLFvmDGrwT4adlGEJq0RQi\",\n    \"_id\": \"62a4769e0fa8cee3857bb401\",\n    \"__v\": 0\n}"
+				},
+				{
+					"name": "400: Invalid Params Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ramzi\",\n    \"email\": \"ramzigmail.com\",\n    \"password\": \"321\",\n    \"passwordConfirmation\": \"321\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "access-control-alloaw-origin",
+							"value": "*"
+						},
+						{
+							"key": "access-control-alloaw-methods",
+							"value": "*"
+						},
+						{
+							"key": "access-control-alloaw-headers",
+							"value": "*"
+						},
+						{
+							"key": "Content-Length",
+							"value": "29"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1d-UAjZf+mkxUEwzB1sjRxnK86nPEY\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 11 Jun 2022 11:05:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"InvalidParamsError\"\n}"
+				},
+				{
+					"name": "400: Missing Params Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ramzi\",\n    \"email\": \"ramzi@gmail.com\",\n    \"password\": \"321\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "access-control-alloaw-origin",
+							"value": "*"
+						},
+						{
+							"key": "access-control-alloaw-methods",
+							"value": "*"
+						},
+						{
+							"key": "access-control-alloaw-headers",
+							"value": "*"
+						},
+						{
+							"key": "Content-Length",
+							"value": "29"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1d-jCFWKUw0juZhdxTgP+K+15XE+yE\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 11 Jun 2022 11:11:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"MissingParamsError\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5050/api",
+			"type": "string"
+		}
+	]
+}

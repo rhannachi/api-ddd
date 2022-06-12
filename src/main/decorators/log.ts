@@ -1,6 +1,6 @@
 
-import { ILogErrorRepository } from '../../application/protocols'
-import { IController, IHttpRequest, IHttpResponse } from '../../presentation/protocols'
+import { ILogErrorRepository } from '@/application/protocols'
+import { IController, IHttpRequest, IHttpResponse } from '@/presentation/protocols'
 
 export class LogControllerDecorator implements IController {
   private readonly controller
