@@ -1,4 +1,4 @@
-import { IUserModel, IAddUser, IAddUserModel } from '../../domain/user'
+import { IAddUser, IUserModel } from '@/domain/user'
 import { InvalidParamsError, MissingParamsError, ServerError } from '../errors'
 import { ok, badRequest, serverError } from '../helper'
 import { IEmailValidation, IHttpRequest } from '../protocols'
@@ -12,7 +12,7 @@ interface IMockSignup {
 
 const mockEmailValidation = (): IEmailValidation => {
   class EmailValidationMock implements IEmailValidation {
-    isValid (email: string): boolean {
+    isValid(): boolean {
       return true
     }
   }
@@ -24,20 +24,20 @@ const mockHttpRequest: IHttpRequest = {
     email: 'email@gmail.com',
     name: 'name',
     password: 'password',
-    passwordConfirmation: 'password'
-  }
+    passwordConfirmation: 'password',
+  },
 }
 
 const mockResponseAddUser: IUserModel = {
   id: 'valid_id',
   name: 'valid_name',
   email: 'valid_email@gmail.com',
-  password: 'valid_password'
+  password: 'valid_password',
 }
 
 const mockAddUser = (): IAddUser => {
   class AddUserMock implements IAddUser {
-    async add (user: IAddUserModel): Promise<IUserModel> {
+    async add(): Promise<IUserModel> {
       return await Promise.resolve(mockResponseAddUser)
     }
   }
@@ -52,7 +52,7 @@ const mockSignup = (): IMockSignup => {
   return {
     signUpController,
     emailValidation,
-    addUser
+    addUser,
   }
 }
 
@@ -63,8 +63,8 @@ describe('SignUp Controller', () => {
       body: {
         email: 'email@gmail.com',
         password: 'password',
-        passwordConfirmation: 'password'
-      }
+        passwordConfirmation: 'password',
+      },
     }
     const httpresponse = await signUpController.handle(httprequest)
 
@@ -78,8 +78,8 @@ describe('SignUp Controller', () => {
       body: {
         name: 'name',
         password: 'password',
-        passwordConfirmation: 'password'
-      }
+        passwordConfirmation: 'password',
+      },
     }
     const httpresponse = await signUpController.handle(httprequest)
 
@@ -92,8 +92,8 @@ describe('SignUp Controller', () => {
       body: {
         email: 'email@gmail.com',
         name: 'name',
-        passwordConfirmation: 'password'
-      }
+        passwordConfirmation: 'password',
+      },
     }
     const httpresponse = await signUpController.handle(httprequest)
 
@@ -106,12 +106,14 @@ describe('SignUp Controller', () => {
       body: {
         email: 'email@gmail.com',
         name: 'name',
-        password: 'password'
-      }
+        password: 'password',
+      },
     }
     const httpresponse = await signUpController.handle(httprequest)
 
-    expect(httpresponse).toEqual(badRequest(new MissingParamsError('passwordConfirmation')))
+    expect(httpresponse).toEqual(
+      badRequest(new MissingParamsError('passwordConfirmation'))
+    )
   })
 
   test('400 if password confirmation fails', async () => {
@@ -121,12 +123,14 @@ describe('SignUp Controller', () => {
         email: 'email@gmail.com',
         name: 'name',
         password: 'password',
-        passwordConfirmation: '_password'
-      }
+        passwordConfirmation: '_password',
+      },
     }
     const httpresponse = await signUpController.handle(httprequest)
 
-    expect(httpresponse).toEqual(badRequest(new InvalidParamsError('passwordConfirmation')))
+    expect(httpresponse).toEqual(
+      badRequest(new InvalidParamsError('passwordConfirmation'))
+    )
   })
 
   test('400 if an invalid email', async () => {
@@ -178,7 +182,7 @@ describe('SignUp Controller', () => {
     expect(addSpy).toHaveBeenCalledWith({
       email: 'email@gmail.com',
       name: 'name',
-      password: 'password'
+      password: 'password',
     })
   })
 
@@ -190,8 +194,8 @@ describe('SignUp Controller', () => {
         name: 'valid_name',
         email: 'valid_email@gmail.com',
         password: 'valid_password',
-        passwordConfirmation: 'valid_password'
-      }
+        passwordConfirmation: 'valid_password',
+      },
     }
     const httpresponse = await signUpController.handle(httprequest)
     expect(httpresponse).toEqual(ok(mockResponseAddUser))

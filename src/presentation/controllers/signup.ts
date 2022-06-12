@@ -1,4 +1,4 @@
-import { IAddUser } from '../../domain/user'
+import { IAddUser } from '@/domain/user'
 import { InvalidParamsError, MissingParamsError } from '../errors'
 import { badRequest, ok, serverError } from '../helper'
 import { IController, IHttpRequest, IHttpResponse, IEmailValidation } from '../protocols'

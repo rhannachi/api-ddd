@@ -1,4 +1,4 @@
-
+/* eslint-disable jest/expect-expect */
 import request from 'supertest'
 import app from '../config/app'
 
@@ -8,9 +8,7 @@ describe('Content Type Middleware', () => {
       res.send('')
     })
 
-    await request(app)
-      .get('/test_content_type')
-      .expect('content-type', /json/)
+    await request(app).get('/test_content_type').expect('content-type', /json/)
   })
 
   test('Should return default content type xml', async () => {

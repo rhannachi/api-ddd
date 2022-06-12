@@ -1,8 +1,8 @@
-import { AddUser } from '../../application/user'
-import { BcryptAdapter } from '../../infra/bcrypt'
-import { LogMongoRepository, UserMongoRepository } from '../../infra/mongo'
-import { SignUpController } from '../../presentation/controllers'
-import { IController } from '../../presentation/protocols'
+import { AddUser } from '@/application/user'
+import { BcryptAdapter } from '@/infra/bcrypt'
+import { LogMongoRepository, UserMongoRepository } from '@/infra/mongo'
+import { SignUpController } from '@/presentation/controllers'
+import { IController } from '@/presentation/protocols'
 import { EmailValidationAdapter } from '../../utils'
 import { LogControllerDecorator } from '../decorators'
 

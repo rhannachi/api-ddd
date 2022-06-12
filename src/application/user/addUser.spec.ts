@@ -1,18 +1,17 @@
-
-import { IUserModel, IAddUserModel } from '../../domain/user'
-import { IAddUserRepository, IEncrypter } from '../protocols'
-import { AddUser } from './addUser'
+import { IUserModel } from "@/domain/user"
+import { IAddUserRepository, IEncrypter } from "../protocols"
+import { AddUser } from "./addUser"
 
 interface MockAddUserDbType {
-  addUser: AddUser
-  encrypter: IEncrypter
-  addUserRepository: IAddUserRepository
+  addUser: AddUser;
+  encrypter: IEncrypter;
+  addUserRepository: IAddUserRepository;
 }
 
 const mockEncrypter = (): IEncrypter => {
   class EncrypterMock implements IEncrypter {
-    async encrypt (value: string): Promise<string> {
-      return await Promise.resolve('hashed_password')
+    async encrypt(): Promise<string> {
+      return await Promise.resolve("hashed_password")
     }
   }
 
@@ -21,12 +20,12 @@ const mockEncrypter = (): IEncrypter => {
 
 const mockAddUserRepository = (): IAddUserRepository => {
   class AddUserRepositoryMock implements IAddUserRepository {
-    async add (userData: IAddUserModel): Promise<IUserModel> {
+    async add(): Promise<IUserModel> {
       const mockUser = {
-        id: 'id',
-        name: 'name',
-        email: 'email',
-        password: 'hashed_password'
+        id: "id",
+        name: "name",
+        email: "email",
+        password: "hashed_password",
       }
       return await Promise.resolve(mockUser)
     }
@@ -38,38 +37,35 @@ const mockAddUserRepository = (): IAddUserRepository => {
 const mockAddUserDb = (): MockAddUserDbType => {
   const encrypter = mockEncrypter()
   const addUserRepository = mockAddUserRepository()
-  const addUser = new AddUser(
-    encrypter,
-    addUserRepository
-  )
+  const addUser = new AddUser(encrypter, addUserRepository)
 
   return {
     addUser,
     encrypter,
-    addUserRepository
+    addUserRepository,
   }
 }
 
 const mockAddUserData = {
-  name: 'name',
-  email: 'email',
-  password: 'password'
+  name: "name",
+  email: "email",
+  password: "password",
 }
 
-describe('DbAddUser Usecase', () => {
-  test('Sould call IEncrypter with correct password', async () => {
+describe("DbAddUser Usecase", () => {
+  test("Sould call IEncrypter with correct password", async () => {
     const { addUser, encrypter } = mockAddUserDb()
 
-    const encryptSpy = jest.spyOn(encrypter, 'encrypt')
+    const encryptSpy = jest.spyOn(encrypter, "encrypt")
     await addUser.add(mockAddUserData)
 
-    expect(encryptSpy).toHaveBeenCalledWith('password')
+    expect(encryptSpy).toHaveBeenCalledWith("password")
   })
 
-  test('throw if IEncrypter throws', async () => {
+  test("throw if IEncrypter throws", async () => {
     const { addUser, encrypter } = mockAddUserDb()
     jest
-      .spyOn(encrypter, 'encrypt')
+      .spyOn(encrypter, "encrypt")
       .mockReturnValueOnce(Promise.reject(new Error()))
 
     const userPromise = addUser.add(mockAddUserData)
@@ -77,23 +73,23 @@ describe('DbAddUser Usecase', () => {
     await expect(userPromise).rejects.toThrow()
   })
 
-  test('call IAddUserRepository with correct values', async () => {
+  test("call IAddUserRepository with correct values", async () => {
     const { addUser, addUserRepository } = mockAddUserDb()
-    const addSpy = jest.spyOn(addUserRepository, 'add')
+    const addSpy = jest.spyOn(addUserRepository, "add")
 
     await addUser.add(mockAddUserData)
 
     expect(addSpy).toHaveBeenCalledWith({
-      name: 'name',
-      email: 'email',
-      password: 'hashed_password'
+      name: "name",
+      email: "email",
+      password: "hashed_password",
     })
   })
 
-  test('throw if IEncrypter throws', async () => {
+  test("throw if IAddUserRepository throws", async () => {
     const { addUser, addUserRepository } = mockAddUserDb()
     jest
-      .spyOn(addUserRepository, 'add')
+      .spyOn(addUserRepository, "add")
       .mockReturnValueOnce(Promise.reject(new Error()))
 
     const userPromise = addUser.add(mockAddUserData)
@@ -101,16 +97,16 @@ describe('DbAddUser Usecase', () => {
     await expect(userPromise).rejects.toThrow()
   })
 
-  test('return an user on success', async () => {
+  test("return an user on success", async () => {
     const { addUser } = mockAddUserDb()
 
     const user = await addUser.add(mockAddUserData)
 
     expect(user).toEqual({
-      id: 'id',
-      name: 'name',
-      email: 'email',
-      password: 'hashed_password'
+      id: "id",
+      name: "name",
+      email: "email",
+      password: "hashed_password",
     })
   })
 })

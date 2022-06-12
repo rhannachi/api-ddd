@@ -1,6 +1,6 @@
 
-import { IAddUserRepository } from '../../../application/protocols'
-import { IAddUserModel, IUserModel } from '../../../domain/user'
+import { IAddUserRepository } from '@/application/protocols'
+import { IAddUserModel, IUserModel } from '@/domain/user'
 import { UserModelMongo } from './user.repository.model'
 
 export class UserMongoRepository implements IAddUserRepository {

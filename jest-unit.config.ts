@@ -1,6 +1,6 @@
 import config from './jest.config'
 
-module.exports = {
+export default {
   ...config,
   testMatch: ['**/*.spec.ts']
 }

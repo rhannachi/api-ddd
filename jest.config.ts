@@ -18,5 +18,8 @@ export default {
     '.+\\.ts$': 'ts-jest'
   },
   // stupFiles
-  setupFiles: ['<rootDir>/jest.stup.ts']
+  setupFiles: ['<rootDir>/jest.stup.ts'],
+  moduleNameMapper: {
+    "@/(.*)": "<rootDir>/src/$1",
+  }
 }
