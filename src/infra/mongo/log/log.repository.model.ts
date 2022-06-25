@@ -8,8 +8,8 @@ interface ILogModelDoc extends Document {
 
 const LogSchema: Schema = new Schema<ILogModelDoc>({
   stack: String,
-  date: Date
+  date: Date,
 })
 
 // TODO rename this
-export const LogModelMongoose = model<ILogModelDoc>('Errors', LogSchema)
+export const LogModelMongo = model<ILogModelDoc>('Error', LogSchema)
