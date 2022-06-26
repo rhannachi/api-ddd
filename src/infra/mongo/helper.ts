@@ -1,6 +1,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import fs from 'fs'
 import mongoose from 'mongoose'
+import { getEnv } from '@/main/config/env'
 
 interface IConnect {
   dbName: string
@@ -28,13 +29,15 @@ const createDirectory = (path: string) => {
 
 type StorageEngineType = 'ephemeralForTest' | 'wiredTiger'
 
+const env = getEnv()
+
 export const MongoHelper: IMongoHelper = {
   mongoServer: undefined,
 
   async connect({
-    dbName = 'db-test',
-    ip = '127.0.0.1',
-    port = 45077,
+    dbName = env.nameMongoDb,
+    ip = env.ipMongoDb,
+    port = env.portMongoDb,
     dbPath,
   }): Promise<void> {
     let storageEngine: StorageEngineType = 'ephemeralForTest'
@@ -61,8 +64,8 @@ export const MongoHelper: IMongoHelper = {
 
     await mongoose.connect(this.mongoServer.getUri())
 
-    console.debug('===> mongoServer:', this.mongoServer?.opts?.instance)
-    console.debug('===> uri:', this.mongoServer?.getUri())
+    console.info('===> mongoServer:', this.mongoServer?.opts?.instance)
+    console.info('===> uri:', this.mongoServer?.getUri())
   },
 
   async disconnect(): Promise<void> {
