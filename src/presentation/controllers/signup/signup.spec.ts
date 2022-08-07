@@ -73,8 +73,7 @@ describe('SignUp Controller', () => {
     }
     const httpresponse = await signUpController.handle(httprequest)
 
-    expect(httpresponse?.status).toBe(400)
-    expect(httpresponse?.body).toEqual(new MissingParamsError('name'))
+    expect(httpresponse).toEqual(badRequest(new MissingParamsError('name')))
   })
 
   test('400 if no email is provided', async () => {
