@@ -6,7 +6,7 @@
   "author": "Ramzi <ramzi.hannachi1991@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register ./src/main/server.ts",
+    "dev": "NODE_ENV=development ts-node-dev -r tsconfig-paths/register ./src/main/server.ts",
     "ts:check": "tsc --noemit",
     "lint": "yarn ts:check && yarn dep:validation && eslint .",
     "lint:fix": "yarn lint --fix",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.4",
@@ -33,7 +34,7 @@
     "@types/mongodb": "^4.0.7",
     "@types/mongodb-memory-server": "^2.3.0",
     "@types/mongoose": "^5.11.97",
-    "@types/node": "^17.0.35",
+    "@types/node": "^18.0.0",
     "@types/supertest": "^2.0.12",
     "@types/validator": "^13.7.2",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
