@@ -1,24 +1,29 @@
 import { IAddUser } from '@/domain/user'
-import { InvalidParamsError, MissingParamsError } from '../errors'
-import { badRequest, ok, serverError } from '../helper'
-import { IController, IHttpRequest, IHttpResponse, IEmailValidation } from '../protocols'
+import { InvalidParamsError, MissingParamsError } from '@/presentation/errors'
+import { badRequest, ok, serverError } from '@/presentation/helper'
+import {
+  IController,
+  IEmailValidation,
+  IHttpRequest,
+  IHttpResponse,
+} from '@/presentation/protocols'
 
 export class SignUpController implements IController {
   private readonly emailValidation: IEmailValidation
   private readonly addUser: IAddUser
 
-  constructor (emailValidation: IEmailValidation, addUser: IAddUser) {
+  constructor(emailValidation: IEmailValidation, addUser: IAddUser) {
     this.emailValidation = emailValidation
     this.addUser = addUser
   }
 
-  async handle (httprequest: IHttpRequest): Promise<IHttpResponse> {
+  async handle(httprequest: IHttpRequest): Promise<IHttpResponse> {
     try {
       const requiredFields = [
         'name',
         'email',
         'password',
-        'passwordConfirmation'
+        'passwordConfirmation',
       ]
 
       for (const field of requiredFields) {
@@ -41,7 +46,7 @@ export class SignUpController implements IController {
       const user = await this.addUser.add({
         name,
         email,
-        password
+        password,
       })
 
       return ok(user)
