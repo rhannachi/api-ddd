@@ -9,6 +9,13 @@ export const expressAdapter = (controller: IController): ExpressAdapterType => {
       body: req.body,
     }
     const httpResponse = await controller.handle(httpRequest)
-    res.status(httpResponse.status).json(httpResponse.body)
+
+    if (httpResponse.status === 200) {
+      res.status(httpResponse.status).json(httpResponse.body)
+    } else {
+      res.status(httpResponse.status).json({
+        error: httpResponse.body?.message,
+      })
+    }
   }
 }

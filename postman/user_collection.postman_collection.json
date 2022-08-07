@@ -127,7 +127,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"ramzi\",\n    \"email\": \"ramzigmail.com\",\n    \"password\": \"321\",\n    \"passwordConfirmation\": \"321\"\n}",
+									"raw": "{\n    \"name\": \"ramzi\",\n    \"password\": \"321\",\n    \"passwordConfirmation\": \"321\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -170,15 +170,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "29"
+									"value": "32"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"1d-UAjZf+mkxUEwzB1sjRxnK86nPEY\""
+									"value": "W/\"20-yveTTQmIsReAS3dF1oQusc72KZg\""
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 11 Jun 2022 11:05:35 GMT"
+									"value": "Sun, 07 Aug 2022 10:20:00 GMT"
 								},
 								{
 									"key": "Connection",
@@ -190,84 +190,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"name\": \"InvalidParamsError\"\n}"
-						},
-						{
-							"name": "400: Missing Params Error",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"ramzi\",\n    \"email\": \"ramzi@gmail.com\",\n    \"password\": \"321\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/signup",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"signup"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "access-control-alloaw-origin",
-									"value": "*"
-								},
-								{
-									"key": "access-control-alloaw-methods",
-									"value": "*"
-								},
-								{
-									"key": "access-control-alloaw-headers",
-									"value": "*"
-								},
-								{
-									"key": "Content-Length",
-									"value": "29"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"1d-jCFWKUw0juZhdxTgP+K+15XE+yE\""
-								},
-								{
-									"key": "Date",
-									"value": "Sat, 11 Jun 2022 11:11:37 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"name\": \"MissingParamsError\"\n}"
+							"body": "{\n    \"error\": \"Missing param: email\"\n}"
 						}
 					]
 				}
