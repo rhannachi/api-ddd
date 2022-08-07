@@ -1,7 +1,12 @@
 import { IAddUser, IUserModel } from '@/domain/user'
-import { InvalidParamsError, MissingParamsError, ServerError } from '../errors'
-import { ok, badRequest, serverError } from '../helper'
-import { IEmailValidation, IHttpRequest } from '../protocols'
+import {
+  InvalidParamsError,
+  MissingParamsError,
+  ServerError,
+} from '@/presentation/errors'
+import { badRequest, ok, serverError } from '@/presentation/helper'
+import { IEmailValidation, IHttpRequest } from '@/presentation/protocols'
+
 import { SignUpController } from './signup'
 
 interface IMockSignup {
@@ -68,8 +73,7 @@ describe('SignUp Controller', () => {
     }
     const httpresponse = await signUpController.handle(httprequest)
 
-    expect(httpresponse?.status).toBe(400)
-    expect(httpresponse?.body).toEqual(new MissingParamsError('name'))
+    expect(httpresponse).toEqual(badRequest(new MissingParamsError('name')))
   })
 
   test('400 if no email is provided', async () => {
