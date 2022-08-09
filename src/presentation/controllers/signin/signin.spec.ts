@@ -1,11 +1,17 @@
-import { InvalidParamsError, MissingParamsError } from '@/presentation/errors'
-import { badRequest } from '@/presentation/helper'
+import { IAuthentication } from '@/domain/authentication'
+import {
+  InvalidParamsError,
+  MissingParamsError,
+  ServerError,
+} from '@/presentation/errors'
+import { badRequest, serverError } from '@/presentation/helper'
 import { IEmailValidation, IHttpRequest } from '@/presentation/protocols'
 import { SignInController } from './signin'
 
 interface IMockSignIn {
   signInController: SignInController
   emailValidation: IEmailValidation
+  authentication: IAuthentication
 }
 
 const mockHttpRequest: IHttpRequest = {
@@ -13,6 +19,15 @@ const mockHttpRequest: IHttpRequest = {
     email: 'email@gmail.com',
     password: 'password',
   },
+}
+
+const mockAuthentication = (): IAuthentication => {
+  class AuthenticationMock implements IAuthentication {
+    authentication(_email: string, _password: string): Promise<string> {
+      return Promise.resolve('token')
+    }
+  }
+  return new AuthenticationMock()
 }
 
 const mockEmailValidation = (): IEmailValidation => {
@@ -26,10 +41,12 @@ const mockEmailValidation = (): IEmailValidation => {
 
 const mockSignin = (): IMockSignIn => {
   const emailValidation = mockEmailValidation()
-  const signInController = new SignInController(emailValidation)
+  const authentication = mockAuthentication()
+  const signInController = new SignInController(emailValidation, authentication)
   return {
     signInController,
     emailValidation,
+    authentication,
   }
 }
 
@@ -74,5 +91,25 @@ describe('Sign In Controller', () => {
     await signInController.handle(mockHttpRequest)
 
     expect(isValidSpy).toHaveBeenCalledWith('email@gmail.com')
+  })
+
+  test('500 if EmailValidation throws', async () => {
+    const { signInController, emailValidation } = mockSignin()
+
+    jest.spyOn(emailValidation, 'isValid').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpresponse = await signInController.handle(mockHttpRequest)
+
+    expect(httpresponse).toEqual(serverError(new ServerError()))
+  })
+
+  test('call AddUser with correct values', async () => {
+    const { signInController, authentication } = mockSignin()
+
+    const authSpy = jest.spyOn(authentication, 'authentication')
+    await signInController.handle(mockHttpRequest)
+
+    expect(authSpy).toHaveBeenCalledWith('email@gmail.com', 'password')
   })
 })
