@@ -1,6 +1,11 @@
 import { IAuthentication } from '@/domain/authentication'
 import { InvalidParamsError, MissingParamsError } from '@/presentation/errors'
-import { badRequest, serverError } from '@/presentation/helper'
+import {
+  badRequest,
+  ok,
+  serverError,
+  unauthorized,
+} from '@/presentation/helper'
 import {
   IController,
   IEmailValidation,
@@ -39,8 +44,11 @@ export class SignInController implements IController {
 
       const token = await this.authentication.authentication(email, password)
 
-      // TODO remove this !!!
-      return Promise.resolve({ body: {}, status: 200 })
+      if (!token) {
+        return unauthorized()
+      }
+
+      return ok({ token })
     } catch (error: unknown) {
       return serverError(error)
     }

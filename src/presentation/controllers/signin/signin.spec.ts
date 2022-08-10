@@ -4,7 +4,12 @@ import {
   MissingParamsError,
   ServerError,
 } from '@/presentation/errors'
-import { badRequest, serverError } from '@/presentation/helper'
+import {
+  badRequest,
+  ok,
+  serverError,
+  unauthorized,
+} from '@/presentation/helper'
 import { IEmailValidation, IHttpRequest } from '@/presentation/protocols'
 import { SignInController } from './signin'
 
@@ -23,7 +28,8 @@ const mockHttpRequest: IHttpRequest = {
 
 const mockAuthentication = (): IAuthentication => {
   class AuthenticationMock implements IAuthentication {
-    authentication(_email: string, _password: string): Promise<string> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    authentication(email: string, password: string): Promise<string | null> {
       return Promise.resolve('token')
     }
   }
@@ -111,5 +117,33 @@ describe('Sign In Controller', () => {
     await signInController.handle(mockHttpRequest)
 
     expect(authSpy).toHaveBeenCalledWith('email@gmail.com', 'password')
+  })
+
+  test('401 if invalid credentials', async () => {
+    const { signInController, authentication } = mockSignin()
+
+    jest
+      .spyOn(authentication, 'authentication')
+      .mockResolvedValueOnce(Promise.resolve(null))
+    const httpresponse = await signInController.handle(mockHttpRequest)
+
+    expect(httpresponse).toEqual(unauthorized())
+  })
+
+  test('500 if Authentication throws', async () => {
+    const { signInController, authentication } = mockSignin()
+
+    jest.spyOn(authentication, 'authentication').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpresponse = await signInController.handle(mockHttpRequest)
+
+    expect(httpresponse).toEqual(serverError(new ServerError()))
+  })
+
+  test('200 if valid credentials', async () => {
+    const { signInController } = mockSignin()
+    const httpresponse = await signInController.handle(mockHttpRequest)
+    expect(httpresponse).toEqual(ok({ token: 'token' }))
   })
 })
