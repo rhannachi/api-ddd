@@ -3,22 +3,9 @@ import { BcryptAdapter } from '@/infra/bcrypt'
 import { LogMongoRepository, UserMongoRepository } from '@/infra/mongo'
 import { SignUpController } from '@/presentation/controllers'
 import { IController } from '@/presentation/protocols'
-import { IValidation } from '@/presentation/protocols/validation'
-import {
-  RequiredFieldValidation,
-  ValidationComposite,
-} from '@/presentation/validators'
 import { EmailValidationAdapter } from '../../utils'
 import { LogControllerDecorator } from '../decorators'
-
-export const makeSignupValidation = (): ValidationComposite => {
-  const validations: IValidation[] = []
-  for (const field of ['name', 'email', 'password', 'passwordConfirmation']) {
-    validations.push(new RequiredFieldValidation(field))
-  }
-
-  return new ValidationComposite(validations)
-}
+import { makeSignupValidation } from './signupValidation'
 
 export const makeSignupController = (): IController => {
   const salt = 12
