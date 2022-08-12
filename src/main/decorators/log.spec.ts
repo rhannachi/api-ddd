@@ -1,16 +1,16 @@
-import { ILogErrorRepository } from "@/application/protocols"
-import { ok, serverError } from "@/presentation/helper"
+import { ILogErrorRepository } from '@/application/protocols'
+import { ok, serverError } from '@/presentation/http'
 import {
   IController,
   IHttpRequest,
   IHttpResponse,
-} from "../../presentation/protocols"
-import { LogControllerDecorator } from "./log"
+} from '../../presentation/protocols'
+import { LogControllerDecorator } from './log'
 
 interface IMockSignup {
-  signUpController: SignUpControllerMock;
-  logControllerDecorator: LogControllerDecorator;
-  logErrorRepository: LogErrorRepositoryMock;
+  signUpController: SignUpControllerMock
+  logControllerDecorator: LogControllerDecorator
+  logErrorRepository: LogErrorRepositoryMock
 }
 class SignUpControllerMock implements IController {
   async handle(): Promise<IHttpResponse> {
@@ -26,7 +26,7 @@ class LogErrorRepositoryMock implements ILogErrorRepository {
 
 const mockError = (): IHttpResponse => {
   const error = new Error()
-  error.stack = "fake_error"
+  error.stack = 'fake_error'
   return serverError(error)
 }
 
@@ -47,39 +47,39 @@ const mockSignup = (): IMockSignup => {
 
 const mockHttpRequest: IHttpRequest = {
   body: {
-    email: "email@gmail.com",
-    name: "name",
-    password: "password",
-    passwordConfirmation: "password",
+    email: 'email@gmail.com',
+    name: 'name',
+    password: 'password',
+    passwordConfirmation: 'password',
   },
 }
 
-describe("Log Decorator Controller", () => {
-  test("Call function handle from the Controller", async () => {
+describe('Log Decorator Controller', () => {
+  test('Call function handle from the Controller', async () => {
     const { signUpController, logControllerDecorator } = mockSignup()
 
-    const handleSpy = jest.spyOn(signUpController, "handle")
+    const handleSpy = jest.spyOn(signUpController, 'handle')
     await logControllerDecorator.handle(mockHttpRequest)
     expect(handleSpy).toHaveBeenCalledWith(mockHttpRequest)
   })
 
-  test("Return the same result of the controller", async () => {
+  test('Return the same result of the controller', async () => {
     const { logControllerDecorator } = mockSignup()
 
     const httpResponse = await logControllerDecorator.handle(mockHttpRequest)
     expect(httpResponse).toEqual(ok(mockHttpRequest))
   })
 
-  test("Call Log error repository with correct error", async () => {
+  test('Call Log error repository with correct error', async () => {
     const { signUpController, logControllerDecorator, logErrorRepository } =
       mockSignup()
 
     jest
-      .spyOn(signUpController, "handle")
+      .spyOn(signUpController, 'handle')
       .mockReturnValueOnce(Promise.resolve(mockError()))
-    const logSpy = jest.spyOn(logErrorRepository, "log")
+    const logSpy = jest.spyOn(logErrorRepository, 'log')
     await logControllerDecorator.handle(mockHttpRequest)
 
-    expect(logSpy).toHaveBeenCalledWith("fake_error")
+    expect(logSpy).toHaveBeenCalledWith('fake_error')
   })
 })

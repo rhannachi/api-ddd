@@ -4,12 +4,7 @@ import {
   MissingParamsError,
   ServerError,
 } from '@/presentation/errors'
-import {
-  badRequest,
-  ok,
-  serverError,
-  unauthorized,
-} from '@/presentation/helper'
+import { badRequest, ok, serverError, unauthorized } from '@/presentation/http'
 import { IEmailValidation, IHttpRequest } from '@/presentation/protocols'
 import { SignInController } from './signin'
 

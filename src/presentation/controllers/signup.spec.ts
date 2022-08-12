@@ -5,9 +5,12 @@ import {
   MissingParamsError,
   ServerError,
 } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/helper'
-import { IEmailValidation, IHttpRequest } from '@/presentation/protocols'
-import { IValidation } from '@/presentation/protocols/validation'
+import { badRequest, ok, serverError } from '@/presentation/http'
+import {
+  IEmailValidation,
+  IValidation,
+  IHttpRequest,
+} from '@/presentation/protocols'
 
 import { SignUpController } from './signup'
 
@@ -80,64 +83,6 @@ const mockSignup = (): IMockSignup => {
 }
 
 describe('SignUp Controller', () => {
-  // test('400 if no name is provided', async () => {
-  //   const { signUpController } = mockSignup()
-  //   const httprequest = {
-  //     body: {
-  //       email: 'email@gmail.com',
-  //       password: 'password',
-  //       passwordConfirmation: 'password',
-  //     },
-  //   }
-  //   const httpresponse = await signUpController.handle(httprequest)
-
-  //   expect(httpresponse).toEqual(badRequest(new MissingParamsError('name')))
-  // })
-
-  // test('400 if no email is provided', async () => {
-  //   const { signUpController } = mockSignup()
-  //   const httprequest = {
-  //     body: {
-  //       name: 'name',
-  //       password: 'password',
-  //       passwordConfirmation: 'password',
-  //     },
-  //   }
-  //   const httpresponse = await signUpController.handle(httprequest)
-
-  //   expect(httpresponse).toEqual(badRequest(new MissingParamsError('email')))
-  // })
-
-  // test('400 if no password is provided', async () => {
-  //   const { signUpController } = mockSignup()
-  //   const httprequest = {
-  //     body: {
-  //       email: 'email@gmail.com',
-  //       name: 'name',
-  //       passwordConfirmation: 'password',
-  //     },
-  //   }
-  //   const httpresponse = await signUpController.handle(httprequest)
-
-  //   expect(httpresponse).toEqual(badRequest(new MissingParamsError('password')))
-  // })
-
-  // test('400 if no password confirmation is provided', async () => {
-  //   const { signUpController } = mockSignup()
-  //   const httprequest = {
-  //     body: {
-  //       email: 'email@gmail.com',
-  //       name: 'name',
-  //       password: 'password',
-  //     },
-  //   }
-  //   const httpresponse = await signUpController.handle(httprequest)
-
-  //   expect(httpresponse).toEqual(
-  //     badRequest(new MissingParamsError('passwordConfirmation'))
-  //   )
-  // })
-
   test('400 if password confirmation fails', async () => {
     const { signUpController } = mockSignup()
     const httprequest = {

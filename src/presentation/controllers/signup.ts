@@ -1,13 +1,13 @@
 import { IAddUser } from '@/domain/user'
 import { InvalidParamsError } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/helper'
+import { badRequest, ok, serverError } from '@/presentation/http'
 import {
   IController,
   IEmailValidation,
   IHttpRequest,
+  IValidation,
   IHttpResponse,
 } from '@/presentation/protocols'
-import { IValidation } from '@/presentation/protocols/validation'
 
 export class SignUpController implements IController {
   private readonly validation: IValidation
@@ -30,19 +30,6 @@ export class SignUpController implements IController {
       if (error) {
         return badRequest(error)
       }
-
-      // const requiredFields = [
-      //   'name',
-      //   'email',
-      //   'password',
-      //   'passwordConfirmation',
-      // ]
-
-      // for (const field of requiredFields) {
-      //   if (httprequest.body[field] === undefined) {
-      //     return badRequest(new MissingParamsError(field))
-      //   }
-      // }
 
       const { name, email, password, passwordConfirmation } = httprequest.body
 
