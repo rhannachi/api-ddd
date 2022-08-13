@@ -3,17 +3,17 @@ import { InvalidParamsError, MissingParamsError } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/http'
 import {
   IController,
-  IEmailValidation,
+  IEmailValidator,
   IHttpRequest,
   IHttpResponse,
 } from '@/presentation/protocols'
 
 export class SignInController implements IController {
-  private readonly emailValidation: IEmailValidation
+  private readonly emailValidation: IEmailValidator
   private readonly authentication: IAuthentication
 
   constructor(
-    emailValidation: IEmailValidation,
+    emailValidation: IEmailValidator,
     authentication: IAuthentication
   ) {
     this.emailValidation = emailValidation

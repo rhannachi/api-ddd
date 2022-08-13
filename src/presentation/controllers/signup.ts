@@ -1,9 +1,7 @@
 import { IAddUser } from '@/domain/user'
-import { InvalidParamsError } from '@/presentation/errors'
 import { badRequest, ok, serverError } from '@/presentation/http'
 import {
   IController,
-  IEmailValidation,
   IHttpRequest,
   IValidation,
   IHttpResponse,
@@ -11,16 +9,10 @@ import {
 
 export class SignUpController implements IController {
   private readonly validation: IValidation
-  private readonly emailValidation: IEmailValidation
   private readonly addUser: IAddUser
 
-  constructor(
-    validation: IValidation,
-    emailValidation: IEmailValidation,
-    addUser: IAddUser
-  ) {
+  constructor(validation: IValidation, addUser: IAddUser) {
     this.validation = validation
-    this.emailValidation = emailValidation
     this.addUser = addUser
   }
 
@@ -31,16 +23,7 @@ export class SignUpController implements IController {
         return badRequest(error)
       }
 
-      const { name, email, password, passwordConfirmation } = httprequest.body
-
-      if (password !== passwordConfirmation) {
-        return badRequest(new InvalidParamsError('passwordConfirmation'))
-      }
-
-      const isValidEmail = this.emailValidation.isValid(email)
-      if (!isValidEmail) {
-        return badRequest(new InvalidParamsError('email'))
-      }
+      const { name, email, password } = httprequest.body
 
       const user = await this.addUser.add({
         name,
