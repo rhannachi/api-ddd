@@ -1,9 +1,11 @@
 import { IValidation } from '@/presentation/protocols'
 import {
   CompareFieldsValidation,
+  EmailValidation,
   RequiredFieldValidation,
   ValidationComposite,
 } from '@/presentation/validators'
+import { EmailValidatorAdapter } from '@/utils'
 
 export const makeSignupValidation = (): ValidationComposite => {
   const validations: IValidation[] = []
@@ -13,6 +15,6 @@ export const makeSignupValidation = (): ValidationComposite => {
   validations.push(
     new CompareFieldsValidation('password', 'passwordConfirmation')
   )
-
+  validations.push(new EmailValidation('email', new EmailValidatorAdapter()))
   return new ValidationComposite(validations)
 }

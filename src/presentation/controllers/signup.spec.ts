@@ -1,22 +1,12 @@
-/* eslint-disable jest/no-commented-out-tests */
 import { IAddUser, IUserModel } from '@/domain/user'
-import {
-  InvalidParamsError,
-  MissingParamsError,
-  ServerError,
-} from '@/presentation/errors'
+import { MissingParamsError, ServerError } from '@/presentation/errors'
 import { badRequest, ok, serverError } from '@/presentation/http'
-import {
-  IEmailValidation,
-  IValidation,
-  IHttpRequest,
-} from '@/presentation/protocols'
+import { IValidation, IHttpRequest } from '@/presentation/protocols'
 
 import { SignUpController } from './signup'
 
 interface IMockSignup {
   signUpController: SignUpController
-  emailValidation: IEmailValidation
   addUser: IAddUser
   validation: IValidation
 }
@@ -37,18 +27,9 @@ const mockResponseAddUser: IUserModel = {
   password: 'valid_password',
 }
 
-const mockEmailValidation = (): IEmailValidation => {
-  class EmailValidationMock implements IEmailValidation {
-    isValid(): boolean {
-      return true
-    }
-  }
-  return new EmailValidationMock()
-}
-
 const mockValidation = (): IValidation => {
   class ValidationMock implements IValidation {
-    validate(input: any): Error | null {
+    validate(_input: any): Error | null {
       return null
     }
   }
@@ -65,70 +46,18 @@ const mockAddUser = (): IAddUser => {
 }
 
 const mockSignup = (): IMockSignup => {
-  const emailValidation = mockEmailValidation()
   const addUser = mockAddUser()
   const validation = mockValidation()
-  const signUpController = new SignUpController(
-    validation,
-    emailValidation,
-    addUser
-  )
+  const signUpController = new SignUpController(validation, addUser)
 
   return {
     signUpController,
-    emailValidation,
     validation,
     addUser,
   }
 }
 
 describe('SignUp Controller', () => {
-  // test('400 if password confirmation fails', async () => {
-  //   const { signUpController } = mockSignup()
-  //   const httprequest = {
-  //     body: {
-  //       email: 'email@gmail.com',
-  //       name: 'name',
-  //       password: 'password',
-  //       passwordConfirmation: '_password',
-  //     },
-  //   }
-  //   const httpresponse = await signUpController.handle(httprequest)
-
-  //   expect(httpresponse).toEqual(
-  //     badRequest(new InvalidParamsError('passwordConfirmation'))
-  //   )
-  // })
-
-  test('400 if an invalid email', async () => {
-    const { signUpController, emailValidation } = mockSignup()
-
-    jest.spyOn(emailValidation, 'isValid').mockReturnValueOnce(false)
-    const httpresponse = await signUpController.handle(mockHttpRequest)
-
-    expect(httpresponse).toEqual(badRequest(new InvalidParamsError('email')))
-  })
-
-  test('call EmailValidation with correct email', async () => {
-    const { signUpController, emailValidation } = mockSignup()
-
-    const isValidSpy = jest.spyOn(emailValidation, 'isValid')
-    await signUpController.handle(mockHttpRequest)
-
-    expect(isValidSpy).toHaveBeenCalledWith('email@gmail.com')
-  })
-
-  test('500 if EmailValidation throws', async () => {
-    const { signUpController, emailValidation } = mockSignup()
-
-    jest.spyOn(emailValidation, 'isValid').mockImplementationOnce(() => {
-      throw new Error()
-    })
-    const httpresponse = await signUpController.handle(mockHttpRequest)
-
-    expect(httpresponse).toEqual(serverError(new ServerError()))
-  })
-
   test('500 if AddUser throws', async () => {
     const { signUpController, addUser } = mockSignup()
 

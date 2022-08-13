@@ -5,12 +5,12 @@ import {
   ServerError,
 } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/http'
-import { IEmailValidation, IHttpRequest } from '@/presentation/protocols'
+import { IEmailValidator, IHttpRequest } from '@/presentation/protocols'
 import { SignInController } from './signin'
 
 interface IMockSignIn {
   signInController: SignInController
-  emailValidation: IEmailValidation
+  emailValidation: IEmailValidator
   authentication: IAuthentication
 }
 
@@ -31,8 +31,8 @@ const mockAuthentication = (): IAuthentication => {
   return new AuthenticationMock()
 }
 
-const mockEmailValidation = (): IEmailValidation => {
-  class EmailValidationMock implements IEmailValidation {
+const mockEmailValidation = (): IEmailValidator => {
+  class EmailValidationMock implements IEmailValidator {
     isValid(): boolean {
       return true
     }
