@@ -1,4 +1,4 @@
-import { IAuthentication } from '@/domain/authentication/authentication'
+import { IAuthentication } from '@/domain/authentication'
 import { InvalidParamsError, MissingParamsError } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/http'
 import {

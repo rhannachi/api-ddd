@@ -3,7 +3,7 @@ import { BcryptAdapter } from '@/infra/bcrypt'
 import { LogMongoRepository, UserMongoRepository } from '@/infra/mongo'
 import { SignUpController } from '@/presentation/controllers'
 import { IController } from '@/presentation/protocols'
-import { LogControllerDecorator } from '../decorators'
+import { LogDecorator } from '../decorators'
 import { makeSignupValidation } from './signupValidation'
 
 export const makeSignupController = (): IController => {
@@ -13,5 +13,5 @@ export const makeSignupController = (): IController => {
   const addUser = new AddUser(bcryptAdaptor, userMongoRepository)
   const signUpController = new SignUpController(makeSignupValidation(), addUser)
   const logMongooseRepository = new LogMongoRepository()
-  return new LogControllerDecorator(signUpController, logMongooseRepository)
+  return new LogDecorator(signUpController, logMongooseRepository)
 }
