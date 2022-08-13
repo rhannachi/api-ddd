@@ -31,11 +31,11 @@ export class SignUpController implements IController {
         return badRequest(error)
       }
 
-      const { name, email, password, passwordConfirmation } = httprequest.body
+      const { name, email, password } = httprequest.body
 
-      if (password !== passwordConfirmation) {
-        return badRequest(new InvalidParamsError('passwordConfirmation'))
-      }
+      // if (password !== passwordConfirmation) {
+      //   return badRequest(new InvalidParamsError('passwordConfirmation'))
+      // }
 
       const isValidEmail = this.emailValidation.isValid(email)
       if (!isValidEmail) {

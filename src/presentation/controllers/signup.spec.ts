@@ -83,22 +83,22 @@ const mockSignup = (): IMockSignup => {
 }
 
 describe('SignUp Controller', () => {
-  test('400 if password confirmation fails', async () => {
-    const { signUpController } = mockSignup()
-    const httprequest = {
-      body: {
-        email: 'email@gmail.com',
-        name: 'name',
-        password: 'password',
-        passwordConfirmation: '_password',
-      },
-    }
-    const httpresponse = await signUpController.handle(httprequest)
+  // test('400 if password confirmation fails', async () => {
+  //   const { signUpController } = mockSignup()
+  //   const httprequest = {
+  //     body: {
+  //       email: 'email@gmail.com',
+  //       name: 'name',
+  //       password: 'password',
+  //       passwordConfirmation: '_password',
+  //     },
+  //   }
+  //   const httpresponse = await signUpController.handle(httprequest)
 
-    expect(httpresponse).toEqual(
-      badRequest(new InvalidParamsError('passwordConfirmation'))
-    )
-  })
+  //   expect(httpresponse).toEqual(
+  //     badRequest(new InvalidParamsError('passwordConfirmation'))
+  //   )
+  // })
 
   test('400 if an invalid email', async () => {
     const { signUpController, emailValidation } = mockSignup()

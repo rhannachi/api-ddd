@@ -1,5 +1,6 @@
 import { IValidation } from '@/presentation/protocols'
 import {
+  CompareFieldsValidation,
   RequiredFieldValidation,
   ValidationComposite,
 } from '@/presentation/validators'
@@ -16,6 +17,9 @@ describe('Signup Validation', () => {
     for (const field of ['name', 'email', 'password', 'passwordConfirmation']) {
       validations.push(new RequiredFieldValidation(field))
     }
+    validations.push(
+      new CompareFieldsValidation('password', 'passwordConfirmation')
+    )
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
