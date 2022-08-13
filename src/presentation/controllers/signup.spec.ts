@@ -1,11 +1,16 @@
+/* eslint-disable jest/no-commented-out-tests */
 import { IAddUser, IUserModel } from '@/domain/user'
 import {
   InvalidParamsError,
   MissingParamsError,
   ServerError,
 } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/helper'
-import { IEmailValidation, IHttpRequest } from '@/presentation/protocols'
+import { badRequest, ok, serverError } from '@/presentation/http'
+import {
+  IEmailValidation,
+  IValidation,
+  IHttpRequest,
+} from '@/presentation/protocols'
 
 import { SignUpController } from './signup'
 
@@ -13,15 +18,7 @@ interface IMockSignup {
   signUpController: SignUpController
   emailValidation: IEmailValidation
   addUser: IAddUser
-}
-
-const mockEmailValidation = (): IEmailValidation => {
-  class EmailValidationMock implements IEmailValidation {
-    isValid(): boolean {
-      return true
-    }
-  }
-  return new EmailValidationMock()
+  validation: IValidation
 }
 
 const mockHttpRequest: IHttpRequest = {
@@ -40,10 +37,28 @@ const mockResponseAddUser: IUserModel = {
   password: 'valid_password',
 }
 
+const mockEmailValidation = (): IEmailValidation => {
+  class EmailValidationMock implements IEmailValidation {
+    isValid(): boolean {
+      return true
+    }
+  }
+  return new EmailValidationMock()
+}
+
+const mockValidation = (): IValidation => {
+  class ValidationMock implements IValidation {
+    validate(input: any): Error | null {
+      return null
+    }
+  }
+  return new ValidationMock()
+}
+
 const mockAddUser = (): IAddUser => {
   class AddUserMock implements IAddUser {
     async add(): Promise<IUserModel> {
-      return await Promise.resolve(mockResponseAddUser)
+      return Promise.resolve(mockResponseAddUser)
     }
   }
   return new AddUserMock()
@@ -52,74 +67,22 @@ const mockAddUser = (): IAddUser => {
 const mockSignup = (): IMockSignup => {
   const emailValidation = mockEmailValidation()
   const addUser = mockAddUser()
-  const signUpController = new SignUpController(emailValidation, addUser)
+  const validation = mockValidation()
+  const signUpController = new SignUpController(
+    validation,
+    emailValidation,
+    addUser
+  )
 
   return {
     signUpController,
     emailValidation,
+    validation,
     addUser,
   }
 }
 
 describe('SignUp Controller', () => {
-  test('400 if no name is provided', async () => {
-    const { signUpController } = mockSignup()
-    const httprequest = {
-      body: {
-        email: 'email@gmail.com',
-        password: 'password',
-        passwordConfirmation: 'password',
-      },
-    }
-    const httpresponse = await signUpController.handle(httprequest)
-
-    expect(httpresponse).toEqual(badRequest(new MissingParamsError('name')))
-  })
-
-  test('400 if no email is provided', async () => {
-    const { signUpController } = mockSignup()
-    const httprequest = {
-      body: {
-        name: 'name',
-        password: 'password',
-        passwordConfirmation: 'password',
-      },
-    }
-    const httpresponse = await signUpController.handle(httprequest)
-
-    expect(httpresponse).toEqual(badRequest(new MissingParamsError('email')))
-  })
-
-  test('400 if no password is provided', async () => {
-    const { signUpController } = mockSignup()
-    const httprequest = {
-      body: {
-        email: 'email@gmail.com',
-        name: 'name',
-        passwordConfirmation: 'password',
-      },
-    }
-    const httpresponse = await signUpController.handle(httprequest)
-
-    expect(httpresponse).toEqual(badRequest(new MissingParamsError('password')))
-  })
-
-  test('400 if no password confirmation is provided', async () => {
-    const { signUpController } = mockSignup()
-    const httprequest = {
-      body: {
-        email: 'email@gmail.com',
-        name: 'name',
-        password: 'password',
-      },
-    }
-    const httpresponse = await signUpController.handle(httprequest)
-
-    expect(httpresponse).toEqual(
-      badRequest(new MissingParamsError('passwordConfirmation'))
-    )
-  })
-
   test('400 if password confirmation fails', async () => {
     const { signUpController } = mockSignup()
     const httprequest = {
@@ -192,16 +155,26 @@ describe('SignUp Controller', () => {
 
   test('200 if valid data is provided', async () => {
     const { signUpController } = mockSignup()
+    const httpresponse = await signUpController.handle(mockHttpRequest)
 
-    const httprequest = {
-      body: {
-        name: 'valid_name',
-        email: 'valid_email@gmail.com',
-        password: 'valid_password',
-        passwordConfirmation: 'valid_password',
-      },
-    }
-    const httpresponse = await signUpController.handle(httprequest)
     expect(httpresponse).toEqual(ok(mockResponseAddUser))
+  })
+
+  test('call Validation with correct values', async () => {
+    const { signUpController, validation } = mockSignup()
+    const validationSpy = jest.spyOn(validation, 'validate')
+    await signUpController.handle(mockHttpRequest)
+
+    expect(validationSpy).toHaveBeenCalledWith(mockHttpRequest.body)
+  })
+
+  test('400 if validation error', async () => {
+    const { signUpController, validation } = mockSignup()
+    jest
+      .spyOn(validation, 'validate')
+      .mockReturnValueOnce(new MissingParamsError('field'))
+    const httpresponse = await signUpController.handle(mockHttpRequest)
+
+    expect(httpresponse).toEqual(badRequest(new MissingParamsError('field')))
   })
 })

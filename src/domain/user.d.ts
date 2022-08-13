@@ -1,4 +1,9 @@
-import { IUserModel } from './user.model'
+export interface IUserModel {
+  id: string
+  name: string
+  email: string
+  password: string
+}
 
 export type IAddUserModel = Omit<IUserModel, 'id'>
 
