@@ -16,8 +16,13 @@
     "test:verbose": "jest --runInBand --verbose",
     "test:watch": "yarn test --watch",
     "test:ci": "yarn test --coverage",
-    "dep:build": "depcruise --config .dependency-cruiser.js --output-type dot src | dot -T png > assets/dependencies.png",
-    "dep:validation": "depcruise --config .dependency-cruiser.js src"
+    "dep:validation": "depcruise --config .dependency-cruiser.js src",
+    "dep:build:all": "yarn dep:build:application && yarn dep:build:infra && yarn dep:build:presentation && yarn dep:build:main && yarn dep:build:adapters",
+    "dep:build:application": "depcruise --config .dependency-cruiser.js --output-type dot src/application | dot -T png > assets/dependencies-application.png",
+    "dep:build:infra": "depcruise --config .dependency-cruiser.js --output-type dot src/infra | dot -T png > assets/dependencies-infra.png",
+    "dep:build:presentation": "depcruise --config .dependency-cruiser.js --output-type dot src/presentation | dot -T png > assets/dependencies-presentation.png",
+    "dep:build:main": "depcruise --config .dependency-cruiser.js --output-type dot src/main | dot -T png > assets/dependencies-main.png",
+    "dep:build:adapters": "depcruise --config .dependency-cruiser.js --output-type dot src/adapters | dot -T png > assets/dependencies-adapters.png"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

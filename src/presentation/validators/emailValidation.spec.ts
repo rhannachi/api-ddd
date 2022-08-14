@@ -1,55 +1,55 @@
 import { InvalidParamsError } from '@/presentation/errors'
-import { IEmailValidator } from '@/presentation/protocols'
+import { IEmailValidationAdapter } from '@/presentation/protocols'
 
 import { EmailValidation } from './emailValidation'
 
 interface IMockEmailValidation {
   emailValidation: EmailValidation
-  emailValidator: IEmailValidator
+  emailValidationAdapter: IEmailValidationAdapter
 }
 
-const mockEmailValidator = (): IEmailValidator => {
-  class EmailValidatorMock implements IEmailValidator {
+const mockEmailValidationAdapter = (): IEmailValidationAdapter => {
+  class EmailValidationAdapter implements IEmailValidationAdapter {
     isValid(): boolean {
       return true
     }
   }
-  return new EmailValidatorMock()
+  return new EmailValidationAdapter()
 }
 
 const mockEmailValidation = (): IMockEmailValidation => {
-  const emailValidator = mockEmailValidator()
-  const emailValidation = new EmailValidation('email', emailValidator)
+  const emailValidationAdapter = mockEmailValidationAdapter()
+  const emailValidation = new EmailValidation('email', emailValidationAdapter)
 
   return {
     emailValidation,
-    emailValidator,
+    emailValidationAdapter,
   }
 }
 
 describe('Email Validation', () => {
   test('400 if an invalid email', async () => {
-    const { emailValidation, emailValidator } = mockEmailValidation()
+    const { emailValidation, emailValidationAdapter } = mockEmailValidation()
 
-    jest.spyOn(emailValidator, 'isValid').mockReturnValueOnce(false)
+    jest.spyOn(emailValidationAdapter, 'isValid').mockReturnValueOnce(false)
     const result = emailValidation.validate({ email: 'email@gmail.com' })
 
     expect(result).toEqual(new InvalidParamsError('email'))
   })
 
   test('call EmailValidation with correct email', () => {
-    const { emailValidation, emailValidator } = mockEmailValidation()
+    const { emailValidation, emailValidationAdapter } = mockEmailValidation()
 
-    const isValidSpy = jest.spyOn(emailValidator, 'isValid')
+    const isValidSpy = jest.spyOn(emailValidationAdapter, 'isValid')
     emailValidation.validate({ email: 'email@gmail.com' })
 
     expect(isValidSpy).toHaveBeenCalledWith('email@gmail.com')
   })
 
   test('throw if EmailValidation throws', async () => {
-    const { emailValidation, emailValidator } = mockEmailValidation()
+    const { emailValidation, emailValidationAdapter } = mockEmailValidation()
 
-    jest.spyOn(emailValidator, 'isValid').mockImplementationOnce(() => {
+    jest.spyOn(emailValidationAdapter, 'isValid').mockImplementationOnce(() => {
       throw new Error()
     })
     expect(emailValidation.validate).toThrow()

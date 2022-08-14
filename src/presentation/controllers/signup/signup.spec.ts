@@ -1,14 +1,14 @@
 import { IAddUser, IUserModel } from '@/domain/user'
 import { MissingParamsError, ServerError } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/http'
-import { IValidation, IHttpRequest } from '@/presentation/protocols'
+import { badRequest, ok, serverError } from '../http'
+import { IFieldsValidation, IHttpRequest } from '@/presentation/protocols'
 
 import { SignUpController } from './signup'
 
 interface IMockSignup {
   signUpController: SignUpController
   addUser: IAddUser
-  validation: IValidation
+  fieldsValidation: IFieldsValidation
 }
 
 const mockHttpRequest: IHttpRequest = {
@@ -27,8 +27,8 @@ const mockResponseAddUser: IUserModel = {
   password: 'valid_password',
 }
 
-const mockValidation = (): IValidation => {
-  class ValidationMock implements IValidation {
+const mockValidation = (): IFieldsValidation => {
+  class ValidationMock implements IFieldsValidation {
     validate(_input: any): Error | null {
       return null
     }
@@ -47,12 +47,12 @@ const mockAddUser = (): IAddUser => {
 
 const mockSignup = (): IMockSignup => {
   const addUser = mockAddUser()
-  const validation = mockValidation()
-  const signUpController = new SignUpController(validation, addUser)
+  const fieldsValidation = mockValidation()
+  const signUpController = new SignUpController(fieldsValidation, addUser)
 
   return {
     signUpController,
-    validation,
+    fieldsValidation,
     addUser,
   }
 }
@@ -90,17 +90,17 @@ describe('SignUp Controller', () => {
   })
 
   test('call Validation with correct values', async () => {
-    const { signUpController, validation } = mockSignup()
-    const validationSpy = jest.spyOn(validation, 'validate')
+    const { signUpController, fieldsValidation } = mockSignup()
+    const validationSpy = jest.spyOn(fieldsValidation, 'validate')
     await signUpController.handle(mockHttpRequest)
 
     expect(validationSpy).toHaveBeenCalledWith(mockHttpRequest.body)
   })
 
-  test('400 if validation error', async () => {
-    const { signUpController, validation } = mockSignup()
+  test('400 if fieldsValidation error', async () => {
+    const { signUpController, fieldsValidation } = mockSignup()
     jest
-      .spyOn(validation, 'validate')
+      .spyOn(fieldsValidation, 'validate')
       .mockReturnValueOnce(new MissingParamsError('field'))
     const httpresponse = await signUpController.handle(mockHttpRequest)
 

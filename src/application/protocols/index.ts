@@ -1,3 +1,3 @@
 export * from './addUser.repository'
-export * from './encrypter'
+export * from './encrypter.adapter'
 export * from './logError.repository'

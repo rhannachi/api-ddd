@@ -1,36 +1,41 @@
-import { IEmailValidator, IValidation } from '@/presentation/protocols'
+import {
+  IEmailValidationAdapter,
+  IFieldsValidation,
+} from '@/presentation/protocols'
 import {
   CompareFieldsValidation,
   EmailValidation,
   RequiredFieldValidation,
-  ValidationComposite,
+  FieldsValidationComposite,
 } from '@/presentation/validators'
-import { makeSignupValidation } from './signupValidation'
+import { makeSignupFieldsValidation } from './signupValidation'
 
-jest.mock('@/presentation/validators/validationComposite')
+jest.mock('@/presentation/validators/fieldsValidationComposite')
 
-const mockEmailValidator = (): IEmailValidator => {
-  class EmailValidatorMock implements IEmailValidator {
+const mockEmailValidationAdapter = (): IEmailValidationAdapter => {
+  class EmailValidationAdapterMock implements IEmailValidationAdapter {
     isValid(): boolean {
       return true
     }
   }
-  return new EmailValidatorMock()
+  return new EmailValidationAdapterMock()
 }
 
 describe('Signup Validation', () => {
-  test('call ValidationComposite', () => {
-    makeSignupValidation()
+  test('call FieldsValidationComposite', () => {
+    makeSignupFieldsValidation()
 
-    const validations: IValidation[] = []
+    const fieldsValidation: IFieldsValidation[] = []
 
     for (const field of ['name', 'email', 'password', 'passwordConfirmation']) {
-      validations.push(new RequiredFieldValidation(field))
+      fieldsValidation.push(new RequiredFieldValidation(field))
     }
-    validations.push(
+    fieldsValidation.push(
       new CompareFieldsValidation('password', 'passwordConfirmation')
     )
-    validations.push(new EmailValidation('email', mockEmailValidator()))
-    expect(ValidationComposite).toHaveBeenCalledWith(validations)
+    fieldsValidation.push(
+      new EmailValidation('email', mockEmailValidationAdapter())
+    )
+    expect(FieldsValidationComposite).toHaveBeenCalledWith(fieldsValidation)
   })
 })

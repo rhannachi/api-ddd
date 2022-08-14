@@ -1,17 +1,17 @@
 import { InvalidParamsError } from '../errors'
-import { IEmailValidator, IValidation } from '../protocols'
+import { IEmailValidationAdapter, IFieldsValidation } from '../protocols'
 
-export class EmailValidation implements IValidation {
+export class EmailValidation implements IFieldsValidation {
   private readonly field: string
-  private readonly emailValidator: IEmailValidator
+  private readonly emailValidationAdapter: IEmailValidationAdapter
 
-  constructor(field: string, emailValidator: IEmailValidator) {
+  constructor(field: string, emailValidationAdapter: IEmailValidationAdapter) {
     this.field = field
-    this.emailValidator = emailValidator
+    this.emailValidationAdapter = emailValidationAdapter
   }
 
   validate(input: any): Error | null {
-    const isValidEmail = this.emailValidator.isValid(input[this.field])
+    const isValidEmail = this.emailValidationAdapter.isValid(input[this.field])
     if (!isValidEmail) {
       return new InvalidParamsError(this.field)
     }

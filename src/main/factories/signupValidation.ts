@@ -1,20 +1,22 @@
-import { IValidation } from '@/presentation/protocols'
+import { IFieldsValidation } from '@/presentation/protocols'
 import {
   CompareFieldsValidation,
   EmailValidation,
   RequiredFieldValidation,
-  ValidationComposite,
+  FieldsValidationComposite,
 } from '@/presentation/validators'
-import { EmailValidatorAdapter } from '@/utils/emailValidator'
+import { EmailValidationAdapter } from '@/adapters/emailValidation'
 
-export const makeSignupValidation = (): ValidationComposite => {
-  const validations: IValidation[] = []
+export const makeSignupFieldsValidation = (): FieldsValidationComposite => {
+  const fieldsValidation: IFieldsValidation[] = []
   for (const field of ['name', 'email', 'password', 'passwordConfirmation']) {
-    validations.push(new RequiredFieldValidation(field))
+    fieldsValidation.push(new RequiredFieldValidation(field))
   }
-  validations.push(
+  fieldsValidation.push(
     new CompareFieldsValidation('password', 'passwordConfirmation')
   )
-  validations.push(new EmailValidation('email', new EmailValidatorAdapter()))
-  return new ValidationComposite(validations)
+  fieldsValidation.push(
+    new EmailValidation('email', new EmailValidationAdapter())
+  )
+  return new FieldsValidationComposite(fieldsValidation)
 }
