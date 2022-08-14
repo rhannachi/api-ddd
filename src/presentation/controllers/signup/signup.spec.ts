@@ -1,6 +1,6 @@
 import { IAddUser, IUserModel } from '@/domain/user'
 import { MissingParamsError, ServerError } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/http'
+import { badRequest, ok, serverError } from '../http'
 import { IValidation, IHttpRequest } from '@/presentation/protocols'
 
 import { SignUpController } from './signup'

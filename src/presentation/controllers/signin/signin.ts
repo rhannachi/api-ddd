@@ -1,12 +1,12 @@
 import { IAuthentication } from '@/domain/authentication'
 import { InvalidParamsError, MissingParamsError } from '@/presentation/errors'
-import { badRequest, ok, serverError, unauthorized } from '@/presentation/http'
 import {
   IController,
   IEmailValidationAdapter,
   IHttpRequest,
   IHttpResponse,
 } from '@/presentation/protocols'
+import { badRequest, ok, serverError, unauthorized } from '../http'
 
 export class SignInController implements IController {
   private readonly emailValidationAdapter: IEmailValidationAdapter

@@ -1,5 +1,5 @@
 import { ILogErrorRepository } from '@/application/protocols'
-import { ok, serverError } from '@/presentation/http'
+import { ok, serverError } from '@/presentation/controllers/http'
 import {
   IController,
   IHttpRequest,

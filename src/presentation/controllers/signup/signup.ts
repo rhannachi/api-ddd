@@ -1,11 +1,11 @@
 import { IAddUser } from '@/domain/user'
-import { badRequest, ok, serverError } from '@/presentation/http'
 import {
   IController,
   IHttpRequest,
   IValidation,
   IHttpResponse,
 } from '@/presentation/protocols'
+import { badRequest, ok, serverError } from '../http'
 
 export class SignUpController implements IController {
   private readonly validation: IValidation
