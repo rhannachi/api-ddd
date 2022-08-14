@@ -1,7 +1,7 @@
 import { InvalidParamsError } from '../errors'
-import { IValidation } from '../protocols'
+import { IFieldsValidation } from '../protocols'
 
-export class CompareFieldsValidation implements IValidation {
+export class CompareFieldsValidation implements IFieldsValidation {
   private readonly field1: string
   private readonly field2: string
 

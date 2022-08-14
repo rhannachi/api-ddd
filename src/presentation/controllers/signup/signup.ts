@@ -2,23 +2,23 @@ import { IAddUser } from '@/domain/user'
 import {
   IController,
   IHttpRequest,
-  IValidation,
+  IFieldsValidation,
   IHttpResponse,
 } from '@/presentation/protocols'
 import { badRequest, ok, serverError } from '../http'
 
 export class SignUpController implements IController {
-  private readonly validation: IValidation
+  private readonly fieldsValidation: IFieldsValidation
   private readonly addUser: IAddUser
 
-  constructor(validation: IValidation, addUser: IAddUser) {
-    this.validation = validation
+  constructor(fieldsValidation: IFieldsValidation, addUser: IAddUser) {
+    this.fieldsValidation = fieldsValidation
     this.addUser = addUser
   }
 
   async handle(httprequest: IHttpRequest): Promise<IHttpResponse> {
     try {
-      const error = this.validation.validate(httprequest.body)
+      const error = this.fieldsValidation.validate(httprequest.body)
       if (error) {
         return badRequest(error)
       }

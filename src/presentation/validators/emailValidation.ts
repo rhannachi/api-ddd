@@ -1,7 +1,7 @@
 import { InvalidParamsError } from '../errors'
-import { IEmailValidationAdapter, IValidation } from '../protocols'
+import { IEmailValidationAdapter, IFieldsValidation } from '../protocols'
 
-export class EmailValidation implements IValidation {
+export class EmailValidation implements IFieldsValidation {
   private readonly field: string
   private readonly emailValidationAdapter: IEmailValidationAdapter
 

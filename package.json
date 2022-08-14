@@ -17,7 +17,7 @@
     "test:watch": "yarn test --watch",
     "test:ci": "yarn test --coverage",
     "dep:validation": "depcruise --config .dependency-cruiser.js src",
-    "dep:build:all": "depcruise --config .dependency-cruiser.js --output-type dot src | dot -T png > assets/dependencies-all.png",
+    "dep:build:all": "yarn dep:build:application && yarn dep:build:infra && yarn dep:build:presentation && yarn dep:build:main && yarn dep:build:adapters",
     "dep:build:application": "depcruise --config .dependency-cruiser.js --output-type dot src/application | dot -T png > assets/dependencies-application.png",
     "dep:build:infra": "depcruise --config .dependency-cruiser.js --output-type dot src/infra | dot -T png > assets/dependencies-infra.png",
     "dep:build:presentation": "depcruise --config .dependency-cruiser.js --output-type dot src/presentation | dot -T png > assets/dependencies-presentation.png",
