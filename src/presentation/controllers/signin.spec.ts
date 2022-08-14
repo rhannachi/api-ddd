@@ -5,12 +5,12 @@ import {
   ServerError,
 } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/http'
-import { IEmailValidator, IHttpRequest } from '@/presentation/protocols'
+import { IEmailValidationAdapter, IHttpRequest } from '@/presentation/protocols'
 import { SignInController } from './signin'
 
 interface IMockSignIn {
   signInController: SignInController
-  emailValidator: IEmailValidator
+  emailValidationAdapter: IEmailValidationAdapter
   authentication: IAuthentication
 }
 
@@ -30,22 +30,25 @@ const mockAuthentication = (): IAuthentication => {
   return new AuthenticationMock()
 }
 
-const mockEmailValidator = (): IEmailValidator => {
-  class EmailValidatorMock implements IEmailValidator {
+const mockEmailValidationAdapter = (): IEmailValidationAdapter => {
+  class EmailValidationAdapterMock implements IEmailValidationAdapter {
     isValid(): boolean {
       return true
     }
   }
-  return new EmailValidatorMock()
+  return new EmailValidationAdapterMock()
 }
 
 const mockSignin = (): IMockSignIn => {
-  const emailValidator = mockEmailValidator()
+  const emailValidationAdapter = mockEmailValidationAdapter()
   const authentication = mockAuthentication()
-  const signInController = new SignInController(emailValidator, authentication)
+  const signInController = new SignInController(
+    emailValidationAdapter,
+    authentication
+  )
   return {
     signInController,
-    emailValidator,
+    emailValidationAdapter,
     authentication,
   }
 }
@@ -76,27 +79,27 @@ describe('Sign In Controller', () => {
   })
 
   test('400 if an invalid email', async () => {
-    const { signInController, emailValidator } = mockSignin()
+    const { signInController, emailValidationAdapter } = mockSignin()
 
-    jest.spyOn(emailValidator, 'isValid').mockReturnValueOnce(false)
+    jest.spyOn(emailValidationAdapter, 'isValid').mockReturnValueOnce(false)
     const httpresponse = await signInController.handle(mockHttpRequest)
 
     expect(httpresponse).toEqual(badRequest(new InvalidParamsError('email')))
   })
 
   test('call EmailValidation with correct email', async () => {
-    const { signInController, emailValidator } = mockSignin()
+    const { signInController, emailValidationAdapter } = mockSignin()
 
-    const isValidSpy = jest.spyOn(emailValidator, 'isValid')
+    const isValidSpy = jest.spyOn(emailValidationAdapter, 'isValid')
     await signInController.handle(mockHttpRequest)
 
     expect(isValidSpy).toHaveBeenCalledWith('email@gmail.com')
   })
 
   test('500 if EmailValidation throws', async () => {
-    const { signInController, emailValidator } = mockSignin()
+    const { signInController, emailValidationAdapter } = mockSignin()
 
-    jest.spyOn(emailValidator, 'isValid').mockImplementationOnce(() => {
+    jest.spyOn(emailValidationAdapter, 'isValid').mockImplementationOnce(() => {
       throw new Error()
     })
     const httpresponse = await signInController.handle(mockHttpRequest)

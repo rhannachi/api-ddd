@@ -1,4 +1,4 @@
-import { IEmailValidator, IValidation } from '@/presentation/protocols'
+import { IEmailValidationAdapter, IValidation } from '@/presentation/protocols'
 import {
   CompareFieldsValidation,
   EmailValidation,
@@ -9,13 +9,13 @@ import { makeSignupValidation } from './signupValidation'
 
 jest.mock('@/presentation/validators/validationComposite')
 
-const mockEmailValidator = (): IEmailValidator => {
-  class EmailValidatorMock implements IEmailValidator {
+const mockEmailValidationAdapter = (): IEmailValidationAdapter => {
+  class EmailValidationAdapterMock implements IEmailValidationAdapter {
     isValid(): boolean {
       return true
     }
   }
-  return new EmailValidatorMock()
+  return new EmailValidationAdapterMock()
 }
 
 describe('Signup Validation', () => {
@@ -30,7 +30,7 @@ describe('Signup Validation', () => {
     validations.push(
       new CompareFieldsValidation('password', 'passwordConfirmation')
     )
-    validations.push(new EmailValidation('email', mockEmailValidator()))
+    validations.push(new EmailValidation('email', mockEmailValidationAdapter()))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })

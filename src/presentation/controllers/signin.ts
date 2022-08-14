@@ -3,20 +3,20 @@ import { InvalidParamsError, MissingParamsError } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/http'
 import {
   IController,
-  IEmailValidator,
+  IEmailValidationAdapter,
   IHttpRequest,
   IHttpResponse,
 } from '@/presentation/protocols'
 
 export class SignInController implements IController {
-  private readonly emailValidation: IEmailValidator
+  private readonly emailValidationAdapter: IEmailValidationAdapter
   private readonly authentication: IAuthentication
 
   constructor(
-    emailValidation: IEmailValidator,
+    emailValidationAdapter: IEmailValidationAdapter,
     authentication: IAuthentication
   ) {
-    this.emailValidation = emailValidation
+    this.emailValidationAdapter = emailValidationAdapter
     this.authentication = authentication
   }
 
@@ -32,7 +32,7 @@ export class SignInController implements IController {
 
       const { email, password } = httpRequest.body
 
-      const isValidEmail = this.emailValidation.isValid(email)
+      const isValidEmail = this.emailValidationAdapter.isValid(email)
       if (!isValidEmail) {
         return badRequest(new InvalidParamsError('email'))
       }

@@ -1,5 +1,5 @@
 import { AddUser } from '@/application/user'
-import { EncrypterAdapter } from '@/infra/encrypter'
+import { EncrypterAdapter } from '@/adapters/encrypter'
 import { LogMongoRepository, UserMongoRepository } from '@/infra/mongo'
 import { SignUpController } from '@/presentation/controllers'
 import { IController } from '@/presentation/protocols'
