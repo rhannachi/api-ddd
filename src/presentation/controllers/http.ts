@@ -3,12 +3,12 @@ import { IHttpResponse } from '../protocols'
 
 export const unauthorized = (): IHttpResponse => ({
   status: 401,
-  body: new UnauthorizedError(),
+  error: new UnauthorizedError(),
 })
 
 export const badRequest = (error: Error): IHttpResponse => ({
   status: 400,
-  body: error,
+  error,
 })
 
 export const serverError = (error: unknown): IHttpResponse => {
@@ -17,13 +17,13 @@ export const serverError = (error: unknown): IHttpResponse => {
   if (error instanceof Error) {
     return {
       status,
-      body: new ServerError(error?.stack),
+      error: new ServerError(error?.stack),
     }
   }
 
   return {
     status,
-    body: new ServerError(String(error)),
+    error: new ServerError(String(error)),
   }
 }
 
