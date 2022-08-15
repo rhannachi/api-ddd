@@ -27,10 +27,10 @@ const mockResponseAddUser: IUserModel = {
   password: 'valid_password',
 }
 
-const mockValidation = (): IFieldsValidation => {
+const mockFieldsValidation = (): IFieldsValidation => {
   class ValidationMock implements IFieldsValidation {
-    validate(_input: IHttpRequest['body']): Error | null {
-      return null
+    validate(_input: IHttpRequest['body']): Error | void {
+      return
     }
   }
   return new ValidationMock()
@@ -47,7 +47,7 @@ const mockAddUser = (): IAddUser => {
 
 const mockSignup = (): IMockSignup => {
   const addUser = mockAddUser()
-  const fieldsValidation = mockValidation()
+  const fieldsValidation = mockFieldsValidation()
   const signUpController = new SignUpController(fieldsValidation, addUser)
 
   return {

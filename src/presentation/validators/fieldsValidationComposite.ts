@@ -7,13 +7,12 @@ export class FieldsValidationComposite implements IFieldsValidation {
     this.fieldsValidation = fieldsValidation
   }
 
-  validate(input: IHttpRequest['body']): Error | null {
+  validate(input: IHttpRequest['body']): Error | void {
     for (const fieldsValidation of this.fieldsValidation) {
       const error = fieldsValidation.validate(input)
       if (error) {
         return error
       }
     }
-    return null
   }
 }

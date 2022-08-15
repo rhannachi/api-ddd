@@ -8,10 +8,9 @@ export class RequiredFieldValidation implements IFieldsValidation {
     this.field = field
   }
 
-  validate(input: IHttpRequest['body']): Error | null {
+  validate(input: IHttpRequest['body']): Error | void {
     if (!input?.[this.field]) {
       return new MissingParamsError(this.field)
     }
-    return null
   }
 }

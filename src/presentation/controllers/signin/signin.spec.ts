@@ -1,17 +1,13 @@
 import { IAuthentication } from '@/domain/authentication/authentication'
-import {
-  InvalidParamsError,
-  MissingParamsError,
-  ServerError,
-} from '@/presentation/errors'
-import { badRequest, ok, serverError, unauthorized } from '../http'
-import { IEmailValidationAdapter, IHttpRequest } from '@/presentation/protocols'
+import { ServerError } from '@/presentation/errors'
+import { ok, serverError, unauthorized } from '../http'
+import { IFieldsValidation, IHttpRequest } from '@/presentation/protocols'
 import { SignInController } from './signin'
 
 interface IMockSignIn {
   signInController: SignInController
-  emailValidationAdapter: IEmailValidationAdapter
   authentication: IAuthentication
+  fieldsValidation: IFieldsValidation
 }
 
 const mockHttpRequest: IHttpRequest = {
@@ -19,6 +15,15 @@ const mockHttpRequest: IHttpRequest = {
     email: 'email@gmail.com',
     password: 'password',
   },
+}
+
+const mockFieldsValidation = (): IFieldsValidation => {
+  class ValidationMock implements IFieldsValidation {
+    validate(_input: IHttpRequest['body']): Error | void {
+      return
+    }
+  }
+  return new ValidationMock()
 }
 
 const mockAuthentication = (): IAuthentication => {
@@ -30,83 +35,22 @@ const mockAuthentication = (): IAuthentication => {
   return new AuthenticationMock()
 }
 
-const mockEmailValidationAdapter = (): IEmailValidationAdapter => {
-  class EmailValidationAdapterMock implements IEmailValidationAdapter {
-    isValid(): boolean {
-      return true
-    }
-  }
-  return new EmailValidationAdapterMock()
-}
-
 const mockSignin = (): IMockSignIn => {
-  const emailValidationAdapter = mockEmailValidationAdapter()
   const authentication = mockAuthentication()
+  const fieldsValidation = mockFieldsValidation()
   const signInController = new SignInController(
-    emailValidationAdapter,
-    authentication
+    authentication,
+    fieldsValidation
   )
+
   return {
     signInController,
-    emailValidationAdapter,
     authentication,
+    fieldsValidation,
   }
 }
 
 describe('Sign In Controller', () => {
-  test('400 if no email is provided', async () => {
-    const { signInController } = mockSignin()
-    const httpRequest = {
-      body: {
-        password: 'password',
-      },
-    }
-    const httpResponse = await signInController.handle(httpRequest)
-
-    expect(httpResponse).toEqual(badRequest(new MissingParamsError('email')))
-  })
-
-  test('400 if no password is provided', async () => {
-    const { signInController } = mockSignin()
-    const httpRequest = {
-      body: {
-        email: 'email',
-      },
-    }
-    const httpResponse = await signInController.handle(httpRequest)
-
-    expect(httpResponse).toEqual(badRequest(new MissingParamsError('password')))
-  })
-
-  test('400 if an invalid email', async () => {
-    const { signInController, emailValidationAdapter } = mockSignin()
-
-    jest.spyOn(emailValidationAdapter, 'isValid').mockReturnValueOnce(false)
-    const httpresponse = await signInController.handle(mockHttpRequest)
-
-    expect(httpresponse).toEqual(badRequest(new InvalidParamsError('email')))
-  })
-
-  test('call EmailValidation with correct email', async () => {
-    const { signInController, emailValidationAdapter } = mockSignin()
-
-    const isValidSpy = jest.spyOn(emailValidationAdapter, 'isValid')
-    await signInController.handle(mockHttpRequest)
-
-    expect(isValidSpy).toHaveBeenCalledWith('email@gmail.com')
-  })
-
-  test('500 if EmailValidation throws', async () => {
-    const { signInController, emailValidationAdapter } = mockSignin()
-
-    jest.spyOn(emailValidationAdapter, 'isValid').mockImplementationOnce(() => {
-      throw new Error()
-    })
-    const httpresponse = await signInController.handle(mockHttpRequest)
-
-    expect(httpresponse).toEqual(serverError(new ServerError()))
-  })
-
   test('call AddUser with correct values', async () => {
     const { signInController, authentication } = mockSignin()
 

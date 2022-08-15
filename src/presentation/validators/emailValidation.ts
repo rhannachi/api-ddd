@@ -14,13 +14,12 @@ export class EmailValidation implements IFieldsValidation {
     this.emailValidationAdapter = emailValidationAdapter
   }
 
-  validate(input: IHttpRequest['body']): Error | null {
+  validate(input: IHttpRequest['body']): Error | void {
     const isValidEmail = this.emailValidationAdapter.isValid(
       input?.[this.field]
     )
     if (!isValidEmail) {
       return new InvalidParamsError(this.field)
     }
-    return null
   }
 }
