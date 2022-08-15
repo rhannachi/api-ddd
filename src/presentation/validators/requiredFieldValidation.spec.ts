@@ -13,6 +13,6 @@ describe('Required Field Validation', () => {
     const requiredFieldValidation = new RequiredFieldValidation('name')
     const error = requiredFieldValidation.validate({ name: 'name' })
 
-    expect(error).toEqual(null)
+    expect(error).toBeFalsy()
   })
 })

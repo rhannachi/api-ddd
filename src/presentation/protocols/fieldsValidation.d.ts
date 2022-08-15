@@ -1,5 +1,5 @@
 import { IHttpRequest } from './http'
 
 export interface IFieldsValidation {
-  validate: (input: IHttpRequest['body']) => Error | null
+  validate: (input: IHttpRequest['body']) => Error | void
 }

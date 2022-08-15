@@ -10,10 +10,9 @@ export class CompareFieldsValidation implements IFieldsValidation {
     this.field2 = field2
   }
 
-  validate(input: IHttpRequest['body']): Error | null {
+  validate(input: IHttpRequest['body']): Error | void {
     if (input?.[this.field1] !== input?.[this.field2]) {
       return new InvalidParamsError(this.field2)
     }
-    return null
   }
 }

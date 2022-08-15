@@ -29,8 +29,8 @@ const mockResponseAddUser: IUserModel = {
 
 const mockValidation = (): IFieldsValidation => {
   class ValidationMock implements IFieldsValidation {
-    validate(_input: IHttpRequest['body']): Error | null {
-      return null
+    validate(_input: IHttpRequest['body']): Error | void {
+      return
     }
   }
   return new ValidationMock()
