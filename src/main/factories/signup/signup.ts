@@ -3,7 +3,7 @@ import { EncrypterAdapter } from '@/adapters/encrypter'
 import { LogMongoRepository, UserMongoRepository } from '@/infra/mongo'
 import { SignUpController } from '@/presentation/controllers'
 import { IController } from '@/presentation/protocols'
-import { LogDecorator } from '../decorators'
+import { LogDecorator } from '../../decorators'
 import { makeSignupFieldsValidation } from './signupValidation'
 
 export const makeSignupController = (): IController => {
