@@ -14,7 +14,7 @@ export const expressAdapter = (controller: IController): ExpressAdapterType => {
       res.status(httpResponse.status).json(httpResponse.body)
     } else {
       res.status(httpResponse.status).json({
-        error: httpResponse.body?.message,
+        error: httpResponse.error?.message,
       })
     }
   }

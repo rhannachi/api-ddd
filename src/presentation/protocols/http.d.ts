@@ -3,7 +3,8 @@ type HttpPayloadType = Record<string, any>
 
 export interface IHttpResponse {
   status: number
-  body: HttpPayloadType | Error
+  body?: HttpPayloadType
+  error?: Error
 }
 
 export interface IHttpRequest {
