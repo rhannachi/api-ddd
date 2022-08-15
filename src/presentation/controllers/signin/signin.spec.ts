@@ -51,59 +51,6 @@ const mockSignin = (): IMockSignIn => {
 }
 
 describe('Sign In Controller', () => {
-  // test('400 if no email is provided', async () => {
-  //   const { signInController } = mockSignin()
-  //   const httpRequest = {
-  //     body: {
-  //       password: 'password',
-  //     },
-  //   }
-  //   const httpResponse = await signInController.handle(httpRequest)
-
-  //   expect(httpResponse).toEqual(badRequest(new MissingParamsError('email')))
-  // })
-
-  // test('400 if no password is provided', async () => {
-  //   const { signInController } = mockSignin()
-  //   const httpRequest = {
-  //     body: {
-  //       email: 'email',
-  //     },
-  //   }
-  //   const httpResponse = await signInController.handle(httpRequest)
-
-  //   expect(httpResponse).toEqual(badRequest(new MissingParamsError('password')))
-  // })
-
-  // test('400 if an invalid email', async () => {
-  //   const { signInController, emailValidationAdapter } = mockSignin()
-
-  //   jest.spyOn(emailValidationAdapter, 'isValid').mockReturnValueOnce(false)
-  //   const httpresponse = await signInController.handle(mockHttpRequest)
-
-  //   expect(httpresponse).toEqual(badRequest(new InvalidParamsError('email')))
-  // })
-
-  // test('call EmailValidation with correct email', async () => {
-  //   const { signInController, emailValidationAdapter } = mockSignin()
-
-  //   const isValidSpy = jest.spyOn(emailValidationAdapter, 'isValid')
-  //   await signInController.handle(mockHttpRequest)
-
-  //   expect(isValidSpy).toHaveBeenCalledWith('email@gmail.com')
-  // })
-
-  // test('500 if EmailValidation throws', async () => {
-  //   const { signInController, emailValidationAdapter } = mockSignin()
-
-  //   jest.spyOn(emailValidationAdapter, 'isValid').mockImplementationOnce(() => {
-  //     throw new Error()
-  //   })
-  //   const httpresponse = await signInController.handle(mockHttpRequest)
-
-  //   expect(httpresponse).toEqual(serverError(new ServerError()))
-  // })
-
   test('call AddUser with correct values', async () => {
     const { signInController, authentication } = mockSignin()
 
@@ -140,22 +87,4 @@ describe('Sign In Controller', () => {
     const httpresponse = await signInController.handle(mockHttpRequest)
     expect(httpresponse).toEqual(ok({ token: 'token' }))
   })
-
-  // test('call Validation with correct values', async () => {
-  //   const { signUpController, fieldsValidation } = mockSignin()
-  //   const validationSpy = jest.spyOn(fieldsValidation, 'validate')
-  //   await signUpController.handle(mockHttpRequest)
-
-  //   expect(validationSpy).toHaveBeenCalledWith(mockHttpRequest.body)
-  // })
-
-  // test('400 if fieldsValidation error', async () => {
-  //   const { signUpController, fieldsValidation } = mockSignin()
-  //   jest
-  //     .spyOn(fieldsValidation, 'validate')
-  //     .mockReturnValueOnce(new MissingParamsError('field'))
-  //   const httpresponse = await signUpController.handle(mockHttpRequest)
-
-  //   expect(httpresponse).toEqual(badRequest(new MissingParamsError('field')))
-  // })
 })

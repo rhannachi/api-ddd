@@ -21,14 +21,6 @@ export class SignInController implements IController {
 
   async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
     try {
-      // const requiredFields = ['email', 'password']
-
-      // for (const field of requiredFields) {
-      //   if (httpRequest.body?.[field] === undefined) {
-      //     return badRequest(new MissingParamsError(field))
-      //   }
-      // }
-
       const error = this.fieldsValidation.validate(httpRequest.body)
 
       if (error) {
@@ -37,11 +29,6 @@ export class SignInController implements IController {
 
       const email = httpRequest.body?.email as string
       const password = httpRequest.body?.password as string
-
-      // const isValidEmail = this.fieldsValidation.isValid(email)
-      // if (!isValidEmail) {
-      //   return badRequest(new InvalidParamsError('email'))
-      // }
 
       const token = await this.authentication.authentication(email, password)
 
