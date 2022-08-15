@@ -1,5 +1,9 @@
 import { InvalidParamsError } from '../errors'
-import { IEmailValidationAdapter, IFieldsValidation } from '../protocols'
+import {
+  IEmailValidationAdapter,
+  IFieldsValidation,
+  IHttpRequest,
+} from '../protocols'
 
 export class EmailValidation implements IFieldsValidation {
   private readonly field: string
@@ -10,8 +14,10 @@ export class EmailValidation implements IFieldsValidation {
     this.emailValidationAdapter = emailValidationAdapter
   }
 
-  validate(input: any): Error | null {
-    const isValidEmail = this.emailValidationAdapter.isValid(input[this.field])
+  validate(input: IHttpRequest['body']): Error | null {
+    const isValidEmail = this.emailValidationAdapter.isValid(
+      input?.[this.field]
+    )
     if (!isValidEmail) {
       return new InvalidParamsError(this.field)
     }

@@ -1,10 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type HttpPayloadType = Record<string, any>
+
 export interface IHttpResponse {
   status: number
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body: any // TODO
+  body: HttpPayloadType | Error
 }
 
 export interface IHttpRequest {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body?: any // TODO
+  body?: HttpPayloadType
 }

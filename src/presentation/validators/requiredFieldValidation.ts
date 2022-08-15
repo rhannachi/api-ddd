@@ -1,5 +1,5 @@
 import { MissingParamsError } from '../errors'
-import { IFieldsValidation } from '../protocols'
+import { IFieldsValidation, IHttpRequest } from '../protocols'
 
 export class RequiredFieldValidation implements IFieldsValidation {
   private readonly field: string
@@ -8,8 +8,8 @@ export class RequiredFieldValidation implements IFieldsValidation {
     this.field = field
   }
 
-  validate(input: any): Error | null {
-    if (!input[this.field]) {
+  validate(input: IHttpRequest['body']): Error | null {
+    if (!input?.[this.field]) {
       return new MissingParamsError(this.field)
     }
     return null

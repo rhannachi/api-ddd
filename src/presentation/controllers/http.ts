@@ -12,20 +12,24 @@ export const badRequest = (error: Error): IHttpResponse => ({
 })
 
 export const serverError = (error: unknown): IHttpResponse => {
+  const status = 500
+
   if (error instanceof Error) {
     return {
-      status: 500,
+      status,
       body: new ServerError(error?.stack),
     }
   }
 
   return {
-    status: 500,
-    body: String(error),
+    status,
+    body: new ServerError(String(error)),
   }
 }
 
-export const ok = (data: IHttpResponse['body']): IHttpResponse => ({
-  status: 200,
-  body: data,
-})
+export const ok = (data: IHttpResponse['body']): IHttpResponse => {
+  return {
+    status: 200,
+    body: data,
+  }
+}

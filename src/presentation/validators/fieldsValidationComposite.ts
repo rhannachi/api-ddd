@@ -1,4 +1,4 @@
-import { IFieldsValidation } from '../protocols'
+import { IFieldsValidation, IHttpRequest } from '../protocols'
 
 export class FieldsValidationComposite implements IFieldsValidation {
   private readonly fieldsValidation: IFieldsValidation[]
@@ -7,7 +7,7 @@ export class FieldsValidationComposite implements IFieldsValidation {
     this.fieldsValidation = fieldsValidation
   }
 
-  validate(input: any): Error | null {
+  validate(input: IHttpRequest['body']): Error | null {
     for (const fieldsValidation of this.fieldsValidation) {
       const error = fieldsValidation.validate(input)
       if (error) {

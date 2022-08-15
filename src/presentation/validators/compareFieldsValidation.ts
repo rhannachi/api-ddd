@@ -1,5 +1,5 @@
 import { InvalidParamsError } from '../errors'
-import { IFieldsValidation } from '../protocols'
+import { IFieldsValidation, IHttpRequest } from '../protocols'
 
 export class CompareFieldsValidation implements IFieldsValidation {
   private readonly field1: string
@@ -10,8 +10,8 @@ export class CompareFieldsValidation implements IFieldsValidation {
     this.field2 = field2
   }
 
-  validate(input: any): Error | null {
-    if (input[this.field1] !== input[this.field2]) {
+  validate(input: IHttpRequest['body']): Error | null {
+    if (input?.[this.field1] !== input?.[this.field2]) {
       return new InvalidParamsError(this.field2)
     }
     return null

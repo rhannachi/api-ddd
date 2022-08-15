@@ -29,7 +29,7 @@ const mockResponseAddUser: IUserModel = {
 
 const mockValidation = (): IFieldsValidation => {
   class ValidationMock implements IFieldsValidation {
-    validate(_input: any): Error | null {
+    validate(_input: IHttpRequest['body']): Error | null {
       return null
     }
   }
@@ -85,7 +85,6 @@ describe('SignUp Controller', () => {
   test('200 if valid data is provided', async () => {
     const { signUpController } = mockSignup()
     const httpresponse = await signUpController.handle(mockHttpRequest)
-
     expect(httpresponse).toEqual(ok(mockResponseAddUser))
   })
 
