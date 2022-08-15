@@ -25,12 +25,13 @@ export class SignInController implements IController {
       const requiredFields = ['email', 'password']
 
       for (const field of requiredFields) {
-        if (httpRequest.body[field] === undefined) {
+        if (httpRequest.body?.[field] === undefined) {
           return badRequest(new MissingParamsError(field))
         }
       }
 
-      const { email, password } = httpRequest.body
+      const email = httpRequest.body?.email as string
+      const password = httpRequest.body?.password as string
 
       const isValidEmail = this.emailValidationAdapter.isValid(email)
       if (!isValidEmail) {

@@ -23,7 +23,9 @@ export class SignUpController implements IController {
         return badRequest(error)
       }
 
-      const { name, email, password } = httprequest.body
+      const name = httprequest.body?.name as string
+      const email = httprequest.body?.email as string
+      const password = httprequest.body?.password as string
 
       const user = await this.addUser.add({
         name,

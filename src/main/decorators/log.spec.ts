@@ -14,7 +14,7 @@ interface IMockSignup {
 }
 class SignUpControllerMock implements IController {
   async handle(): Promise<IHttpResponse> {
-    return await Promise.resolve(ok(mockHttpRequest))
+    return await Promise.resolve(ok({}))
   }
 }
 
@@ -54,22 +54,21 @@ const mockHttpRequest: IHttpRequest = {
 describe('Log Decorator Controller', () => {
   test('Call function handle from the Controller', async () => {
     const { signUpController, logDecorator } = mockSignup()
-
     const handleSpy = jest.spyOn(signUpController, 'handle')
     await logDecorator.handle(mockHttpRequest)
+
     expect(handleSpy).toHaveBeenCalledWith(mockHttpRequest)
   })
 
   test('Return the same result of the controller', async () => {
     const { logDecorator } = mockSignup()
-
     const httpResponse = await logDecorator.handle(mockHttpRequest)
-    expect(httpResponse).toEqual(ok(mockHttpRequest))
+
+    expect(httpResponse).toEqual(ok({}))
   })
 
   test('Call Log error repository with correct error', async () => {
     const { signUpController, logDecorator, logErrorRepository } = mockSignup()
-
     jest
       .spyOn(signUpController, 'handle')
       .mockReturnValueOnce(Promise.resolve(mockError()))
