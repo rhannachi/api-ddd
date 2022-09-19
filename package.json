@@ -44,7 +44,7 @@
     "@types/validator": "^13.7.2",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.35.1",
-    "dependency-cruiser": "^11.7.1",
+    "dependency-cruiser": "^11.16.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.5.3",
