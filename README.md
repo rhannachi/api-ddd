@@ -3,6 +3,8 @@
 source:
 [Architecture hexagonale DDD](https://blog.octo.com/architecture-hexagonale-trois-principes-et-un-exemple-dimplementation)
 
+[![Workflows (Lint, Test) Actions](https://github.com/rhannachi/api-ddd/actions/workflows/workflow.yml/badge.svg)](https://github.com/rhannachi/api-ddd/actions/workflows/workflow.yml)\
+[![codecov](https://codecov.io/gh/rhannachi/api-ddd/branch/main/graph/badge.svg?token=0AE7QTRB6W)](https://codecov.io/gh/rhannachi/api-ddd)
 ## Architecture and dependencies:
 
 ### Presentation layer

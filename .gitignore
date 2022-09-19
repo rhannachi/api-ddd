@@ -106,3 +106,5 @@ dist
 # mongoDb config
 globalConfig.json
 
+
+.idea/

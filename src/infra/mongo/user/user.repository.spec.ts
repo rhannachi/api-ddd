@@ -2,6 +2,8 @@ import { MongoHelper } from '../helper'
 import { UserMongoRepository } from './user.repository'
 import { UserModelMongo } from './user.repository.model'
 
+jest.useRealTimers();
+
 describe('User Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect({})
