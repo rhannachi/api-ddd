@@ -8,7 +8,9 @@
 ##
 
 [![Workflows (Lint, Test) Actions](https://github.com/rhannachi/api-ddd/actions/workflows/workflow.yml/badge.svg)](https://github.com/rhannachi/api-ddd/actions/workflows/workflow.yml)\
-[![codecov](https://codecov.io/gh/rhannachi/api-ddd/branch/main/graph/badge.svg?token=0AE7QTRB6W)](https://codecov.io/gh/rhannachi/api-ddd)
+[![codecov](https://codecov.io/gh/rhannachi/api-ddd/branch/main/graph/badge.svg?token=0AE7QTRB6W)](https://codecov.io/gh/rhannachi/api-ddd)\
+[![Known Vulnerabilities](https://snyk.io/test/github/rhannachi/api-ddd/badge.svg)](https://snyk.io/test/github/rhannachi/api-ddd)\
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/rhannachi/api-ddd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/rhannachi/api-ddd/context:javascript)
 
 ## Architecture and dependencies:
 
