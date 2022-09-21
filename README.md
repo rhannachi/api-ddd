@@ -2,6 +2,7 @@
 
 ##
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4d8907cc1d2f478684caf82ccca1ebab)](https://app.codacy.com/gh/rhannachi/api-ddd?utm_source=github.com&utm_medium=referral&utm_content=rhannachi/api-ddd&utm_campaign=Badge_Grade_Settings)
 [![typescript](assets/made-with-typescript.svg)](https://www.typescriptlang.org)\
 [![typescript](assets/made-with-domaine-driven-design.svg)](https://blog.octo.com/architecture-hexagonale-trois-principes-et-un-exemple-dimplementation)
 
