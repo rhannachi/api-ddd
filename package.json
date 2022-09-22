@@ -52,7 +52,7 @@
     "husky": "4",
     "jest": "^28.1.0",
     "lint-staged": "^12.4.1",
-    "mongodb-memory-server": "^8.6.0",
+    "mongodb-memory-server": "^8.9.0",
     "supertest": "^6.2.3",
     "ts-jest": "^28.0.2",
     "ts-node-dev": "^2.0.0",
