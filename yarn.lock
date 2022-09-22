@@ -3478,12 +3478,42 @@ mongodb-memory-server-core@8.6.0:
     uuid "^8.3.1"
     yauzl "^2.10.0"
 
-mongodb-memory-server@*, mongodb-memory-server@^8.6.0:
+mongodb-memory-server-core@8.9.2:
+  version "8.9.2"
+  resolved "https://registry.yarnpkg.com/mongodb-memory-server-core/-/mongodb-memory-server-core-8.9.2.tgz#560f8fd358463b606f99164e7557707f6d8d9d52"
+  integrity sha512-LG8u8QxPGrozy5UBg9YCh8jvvs5Di93zXrusgwgpj+vKxn+Efa6l1pFnCHNy6SYFydFCpMezilsDIXF0tzbJ6A==
+  dependencies:
+    "@types/tmp" "^0.2.3"
+    async-mutex "^0.3.2"
+    camelcase "^6.3.0"
+    debug "^4.3.4"
+    find-cache-dir "^3.3.2"
+    get-port "^5.1.1"
+    https-proxy-agent "^5.0.1"
+    md5-file "^5.0.0"
+    mongodb "~4.9.0"
+    new-find-package-json "^2.0.0"
+    semver "^7.3.7"
+    tar-stream "^2.1.4"
+    tmp "^0.2.1"
+    tslib "^2.4.0"
+    uuid "^8.3.1"
+    yauzl "^2.10.0"
+
+mongodb-memory-server@*:
   version "8.6.0"
   resolved "https://registry.yarnpkg.com/mongodb-memory-server/-/mongodb-memory-server-8.6.0.tgz#18e3637af4c37698be48dc9e4a868ec2c522c37d"
   integrity sha512-4I3qpIN3Ls5Vs8CPIl7SiT/rQUYmpgP27csDqgkSY7fu09mEqT3ieIC7cRhgx8wuRKr3rTotKMP4G1+Qw7+9Kw==
   dependencies:
     mongodb-memory-server-core "8.6.0"
+    tslib "^2.4.0"
+
+mongodb-memory-server@^8.9.0:
+  version "8.9.2"
+  resolved "https://registry.yarnpkg.com/mongodb-memory-server/-/mongodb-memory-server-8.9.2.tgz#dc95bc46f7494eae90e757b292300be2d85b4d22"
+  integrity sha512-h+u+60C/yYZStKqL13O8EerRyt2gdFg9PLyRSBJr5eJfCr+tVMoMrdCw6Dd6PKlCp5hwq27VpjvtSWAT44bHiA==
+  dependencies:
+    mongodb-memory-server-core "8.9.2"
     tslib "^2.4.0"
 
 mongodb@*, mongodb@^4.5.0, mongodb@^4.6.0:
@@ -3510,7 +3540,7 @@ mongodb@4.5.0:
   optionalDependencies:
     saslprep "^1.0.3"
 
-mongodb@4.9.1:
+mongodb@4.9.1, mongodb@~4.9.0:
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-4.9.1.tgz#0c769448228bcf9a6aa7d16daa3625b48312479e"
   integrity sha512-ZhgI/qBf84fD7sI4waZBoLBNJYPQN5IOC++SBCiPiyhzpNKOxN/fi0tBHvH2dEC42HXtNEbFB0zmNz4+oVtorQ==
@@ -3597,6 +3627,13 @@ new-find-package-json@^1.1.0:
   dependencies:
     debug "^4.3.4"
     tslib "^2.4.0"
+
+new-find-package-json@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/new-find-package-json/-/new-find-package-json-2.0.0.tgz#96553638781db35061f351e8ccb4d07126b6407d"
+  integrity sha512-lDcBsjBSMlj3LXH2v/FW3txlh2pYTjmbOXPYJD93HI5EwuLzI11tdHSIpUMmfq/IOsldj4Ps8M8flhm+pCK4Ew==
+  dependencies:
+    debug "^4.3.4"
 
 node-addon-api@^3.1.0:
   version "3.2.1"
