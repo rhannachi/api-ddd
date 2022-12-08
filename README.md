@@ -16,6 +16,80 @@
 
 ## Architecture and dependencies:
 
+```
+src/
+├── adapters
+│   ├── emailValidation
+│   │   └── emailValidator.adapter.ts
+│   └── encrypter
+│       └── encrypter.adapter.ts
+├── application
+│   ├── protocols
+│   │   ├── addUser.repository.d.ts
+│   │   ├── encrypter.adapter.d.ts
+│   │   └── logError.repository.d.ts
+│   └── user
+│       └── addUser.ts
+├── domain
+│   ├── authentication
+│   │   └── authentication.d.ts
+│   └── user
+│       └── user.d.ts
+├── infra
+│   └── mongo
+│       ├── helper.ts
+│       ├── log
+│       │   ├── log.repository.model.ts
+│       │   └── log.repository.ts
+│       └── user
+│           ├── user.repository.model.ts
+│           └── user.repository.ts
+├── main
+│   ├── adapters
+│   │   └── express.adapter.ts
+│   ├── config
+│   │   ├── app.ts
+│   │   └── env.ts
+│   ├── decorators
+│   │   └── log.ts
+│   ├── factories
+│   │   ├── signin
+│   │   │   ├── signin.ts
+│   │   │   └── signinValidation.ts
+│   │   └── signup
+│   │       ├── signup.ts
+│   │       └── signupValidation.ts
+│   ├── middlewares
+│   │   ├── bodyParser.ts
+│   │   ├── contentType.ts
+│   │   └── cors.ts
+│   ├── routes
+│   │   └── signup.route.ts
+│   └── server.ts
+└── presentation
+    ├── controllers
+    │   ├── http.ts
+    │   ├── signin
+    │   │   └── signin.ts
+    │   └── signup
+    │       └── signup.ts
+    ├── errors
+    │   ├── invalidParams.ts
+    │   ├── missingParams.ts
+    │   ├── serverError.ts
+    │   └── unauthorized.ts
+    ├── protocols
+    │   ├── controller.d.ts
+    │   ├── emailValidation.adapter.d.ts
+    │   ├── fieldsValidation.d.ts
+    │   └── http.d.ts
+    └── validators
+        ├── compareFieldsValidation.ts
+        ├── emailValidation.ts
+        ├── fieldsValidationComposite.ts
+        └── requiredFieldValidation.ts
+```
+
 ### Presentation layer
 
 ![Presentation Layer](/assets/dependencies-presentation.png)
